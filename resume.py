@@ -77,8 +77,7 @@ def extract_job_role(text):
         "data science professional", 
         "machine learning engineer", 
         "software engineer", 
-        "data analyst",
-        ""
+        "data analyst"
     }
     
     for phrase in about_me_patterns:
