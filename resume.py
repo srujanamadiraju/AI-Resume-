@@ -23,10 +23,22 @@ def extract_text_from_docx(docx_file):
     return text
 
 def extract_name(text):
+    # Extract the first few lines (assuming name is in the header)
+    lines = text.strip().split("\n")[:5]  # Look at the first 5 lines
+    
+    # Use regex to find the first capitalized words (likely a name)
+    name_pattern = r'^[A-Z][a-z]+(?:\s[A-Z][a-z]+)+'
+    for line in lines:
+        match = re.search(name_pattern, line.strip())
+        if match:
+            return match.group(0)
+    
+    # Fallback: Use spaCy's entity recognition
     doc = nlp(text)
     for ent in doc.ents:
         if ent.label_ == "PERSON":
             return ent.text
+
     return "Not Found"
 
 def extract_email(text):
