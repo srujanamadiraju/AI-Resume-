@@ -10,7 +10,17 @@ import os
 nlp = spacy.load("en_core_web_sm")
 
 # Predefined Skills, Job Roles, and Domains
-SKILLS_LIST = {"Python", "Java", "Machine Learning", "Deep Learning", "Data Science", "SQL", "JavaScript", "AWS", "React", "TensorFlow", "Web Scraping", "Google PaLM API", "LangChain", "EDA", "Unity", "HTML", "GitHub", "C programming"}
+SKILLS_LIST = {"Python", "Java", "Machine Learning", "Deep Learning", "Data Science", "SQL", "JavaScript", "AWS", "React", "TensorFlow", "Web Scraping", "Google PaLM API", "LangChain",
+"Python", "Java", "Machine Learning", "Deep Learning", "Data Science", "SQL", "JavaScript",
+               "AWS", "React", "TensorFlow", "Web Scraping", "Google PaLM API", "LangChain", "EDA","C","C++","HTML","CSS","PHP","Node.js","Angular",
+               "Vue.js","Django","Flask","Laravel","SpringBoot","Hibernate","JPA","JSP","Servlets","JDBC","JSTL","Thymeleaf","Junit","Mockito","PowerMock",
+               "TestNG","Selenium","Docker","Kubernetes","JIRA","Confluence","Git","Bitbucket","Jenkins","TypeScript", "Go", "Ruby", "Rust", "Scala","Bootstrap","MySQL", "PostgreSQL", "MongoDB", "SQLite", "Firebase", "Oracle", "Cassandra"
+               "AWS", "Azure", "Google Cloud", "Docker", "Kubernetes", "Terraform", "Jenkins", "CI/CD","Machine Learning", "Deep Learning", "Natural Language Processing", "Computer Vision", 
+    "TensorFlow", "PyTorch", "Scikit-learn", "Keras", "Hugging Face", "LangChain", "Google PaLM API","Data Analysis", "Data Visualization", "Pandas", "NumPy", "Matplotlib", "Seaborn", "EDA", 
+    "Big Data", "Hadoop", "Spark", "Tableau", "Power BI", "Google Analytics", "Ethical Hacking", "Penetration Testing", "Network Security", "Cryptography", "SIEM", 
+    "Security Audits", "OWASP", "SOC Analyst","Linux", "Windows Server", "Networking", "TCP/IP", "Bash Scripting", "Cloud Computing","Project Management", "Problem-Solving", "Communication Skills", "Teamwork", "Leadership", 
+    "Time Management", "Critical Thinking""Git", "GitHub", "Agile", "Scrum", "JIRA", "Trello", "Microservices", "REST API", 
+    "GraphQL", "Unit Testing", "CI/CD", "Test Automation" "EDA", "Unity", "HTML", "GitHub", "C programming"}
 JOB_ROLES = {"Software Engineer", "Data Scientist", "Machine Learning Engineer", "Project Manager", "AI Researcher", "Data Analyst", "Backend Developer", "Frontend Developer"}
 DOMAINS = {"Healthcare", "Finance", "E-commerce", "Education", "Cybersecurity", "Robotics", "Blockchain"}
 
