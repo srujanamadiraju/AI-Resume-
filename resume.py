@@ -1,4 +1,3 @@
-%%writefile C:/Users/madir/OneDrive/Desktop/resume_app.py
 import streamlit as st
 import pdfplumber
 import docx
@@ -70,36 +69,73 @@ def extract_skills(text):
     return ", ".join(sorted(found_skills)) if found_skills else "Not Found"
 
 # Extract Experience
+import re
+from datetime import datetime
+
 def extract_experience(text):
     experience_patterns = [
-        r'(?i)([A-Za-z\s-]+)\s+at\s+([\w\s&-]+)\s+\((\d{4})-(\d{4}|\bPresent\b)\)',  # Role at Company (YYYY-YYYY/Present)
-        r'(?i)([A-Za-z\s-]+)\s+at\s+([\w\s&-]+),?\s+from\s+(\d{4})\s+to\s+(\d{4}|\bPresent\b)',  # Role at Company from YYYY to YYYY/Present
+        r'(?i)([A-Za-z\s-]+)\s+at\s+([\w\s&-]+)\s+\((\d{4})-(\d{4}|\bPresent\b|\bCurrent\b)\)',  # Role at Company (YYYY-YYYY/Present/Current)
+        r'(?i)([A-Za-z\s-]+)\s+at\s+([\w\s&-]+),?\s+from\s+(\d{4})\s+to\s+(\d{4}|\bPresent\b|\bCurrent\b)',  # Role at Company from YYYY to YYYY/Present/Current
+        r'(?i)([\w\s-]+)\s+–\s+([\w\s&-]+)\s+\(?(\d{4})\s*[-–]\s*(\d{4}|\bPresent\b|\bCurrent\b)\)?',  # Company – Role (YYYY – YYYY/Current)
+        r'(?i)Worked at\s+([\w\s&-]+)\s+from\s+(\d{4})\s*(?:-|to)\s*(\d{4}|\bPresent\b|\bCurrent\b)',  # Worked at Company from YYYY-Present/Current
+        r'(?i)(\d{4})\s*[-–]\s*(\bCurrent\b|\bPresent\b)',  # YYYY - Current
+        r'(?i)(\d+)\s+(?:years?|months?)\s+(?:of)?\s*(?:experience|working)?',  # 3 years of experience
+        r'(?i)([A-Za-z]+)\s+(\d{4})\s*[-–]\s*([A-Za-z]+)?\s*(\d{4}|\bPresent\b|\bCurrent\b)?'  # Month Year - Month Year / Month Year - Present
     ]
     
     total_experience = 0
+    current_year = datetime.now().year
+    month_map = {
+        "january": 1, "february": 2, "march": 3, "april": 4, "may": 5, "june": 6,
+        "july": 7, "august": 8, "september": 9, "october": 10, "november": 11, "december": 12
+    }
 
     for pattern in experience_patterns:
         matches = re.findall(pattern, text)
         for match in matches:
-            if len(match) == 4:
+            if len(match) == 4:  # Formats with Role, Company, Start Year, End Year
                 role, company, start_year, end_year = match
+            elif len(match) == 3:  # Formats without role (e.g., "Worked at Company from YYYY-Present")
+                company, start_year, end_year = match
+                role = ""  # No role in this case
+            elif len(match) == 2:  # "YYYY - Current" format
+                start_year, end_year = match
+                role, company = "", ""  # No role or company
+            elif len(match) == 1:  # Direct experience format (e.g., "3 years of experience")
+                return f"{match[0]} years"  # Directly return years if found
+            elif len(match) == 5:  # "Month Year - Month Year / Month Year - Present" format
+                start_month, start_year, end_month, end_year = match[0], match[1], match[2], match[3]
 
-                # Exclude internships and projects
-                if "intern" in role.lower() or "project" in role.lower():
-                    continue
-                
+                # Convert month names to numbers
+                start_month_num = month_map.get(start_month.lower(), 1)
+                end_month_num = month_map.get(end_month.lower(), 1) if end_month else start_month_num
+
                 # Convert years to integers
                 start_year = int(start_year)
-                if end_year.lower() == "present":
-                    end_year = datetime.now().year
-                else:
-                    end_year = int(end_year)
-                
+                end_year = current_year if end_year.lower() in ["present", "current"] else int(end_year)
+
+                # Calculate experience in months and convert to years
+                experience_months = (end_year - start_year) * 12 + (end_month_num - start_month_num)
+                years_of_experience = max(0, experience_months // 12)
+                total_experience += years_of_experience
+                continue
+
+            # Exclude internships and projects
+            if "intern" in role.lower() or "project" in role.lower():
+                continue
+
+            try:
+                start_year = int(start_year)
+                end_year = current_year if end_year.lower() in ["present", "current"] else int(end_year)
+
                 # Calculate experience duration
                 years_of_experience = max(0, end_year - start_year)
                 total_experience += years_of_experience
+            except ValueError:
+                continue  # Skip invalid year formats
 
     return f"{total_experience} years" if total_experience > 0 else "0 years"
+
 
 
 # Extract Job Role
