@@ -73,78 +73,87 @@ import re
 from datetime import datetime
 
 def extract_experience(text):
+    current_year = datetime.now().year
+    total_experience = 0
+    seen_periods = set()
+
+    # **Enhanced Regex Patterns for Work Experience**
     experience_patterns = [
-        r'(?i)([A-Za-z\s-]+)\s+at\s+([\w\s&-]+)\s+\((\d{4})-(\d{4}|\bPresent\b|\bCurrent\b)\)',  # Role at Company (YYYY-YYYY/Present/Current)
-        r'(?i)([A-Za-z\s-]+)\s+at\s+([\w\s&-]+),?\s+from\s+(\d{4})\s+to\s+(\d{4}|\bPresent\b|\bCurrent\b)',  # Role at Company from YYYY to YYYY/Present/Current
-        r'(?i)(\d{4})\s*[-–]\s*(\bCurrent\b|\bPresent\b)',  # YYYY - Current
-        r'(?i)([A-Za-z]+)\s+(\d{4})\s*[-–]\s*([A-Za-z]+)?\s*(\d{4}|\bPresent\b|\bCurrent\b)?'  # Month Year - Month Year / Month Year - Present
+        r'(?i)(\b\d{4}\b)\s*[-–]\s*(\b\d{4}|\bPresent\b|\bCurrent\b)',  # YYYY - YYYY / YYYY - Present
+        r'(?i)(\b\d{4}\b)\s+to\s+(\b\d{4}|\bPresent\b|\bCurrent\b)',  # YYYY to YYYY / Present
+        r'(?i)([A-Za-z]+\s+\d{4})\s*[-–]\s*([A-Za-z]+\s+\d{4}|\bPresent\b|\bCurrent\b)',  # Month YYYY - Month YYYY / Present
+    ]
+
+    # **Strict Exclusion Keywords**
+    education_keywords = ["bachelor", "master", "phd", "diploma", "college", "university", "education", "cgpa"]
+    internship_keywords = ["intern", "internship", "virtual internship"]
+    project_keywords = ["project", "capstone", "research", "thesis", "hackathon", "simulation"]
+
+    # **Extract Education Years**
+    education_patterns = [
+        r'(?i)(bachelor|master|phd|diploma|college|university|education).*?(\d{4})\s*[-–]\s*(\d{4})',
+        r'(?i)(cgpa|gpa|percentage|ssc|hsc|class\s?(x|xii)).*?(\d{4})\s*[-–]\s*(\d{4})'
     ]
     
-    total_experience = 0
-    current_year = datetime.now().year
-    current_month = datetime.now().month
-    seen_periods = set()  # To prevent duplicate counting
+    education_years = set()
+    for pattern in education_patterns:
+        matches = re.findall(pattern, text)
+        for match in matches:
+            start_year, end_year = int(match[-2]), int(match[-1])
+            education_years.update(range(start_year, end_year + 1))
 
-    # Month mapping for conversion
-    month_map = {
-        "january": 1, "february": 2, "march": 3, "april": 4, "may": 5, "june": 6,
-        "july": 7, "august": 8, "september": 9, "october": 10, "november": 11, "december": 12
-    }
+    print("Extracted education years:", education_years)
 
+    # **Ensure "Experience" Section Exists**
+    if not re.search(r'(?i)\b(work\s+experience|professional\s+experience|employment\s+history)\b', text):
+        print("⚠️ No experience section found. Returning 0 years.")
+        return "0 years"
+
+    print("✅ Experience section detected!")
+
+    # **Extract Work Experience**
     for pattern in experience_patterns:
         matches = re.findall(pattern, text)
         for match in matches:
-            if len(match) == 4:  # Formats with Role, Company, Start Year, End Year
-                role, company, start_year, end_year = match
-            elif len(match) == 3:  # Formats without role (e.g., "Worked at Company from YYYY-Present")
-                company, start_year, end_year = match
-                role = ""  # No role in this case
-            elif len(match) == 2:  # "YYYY - Current" format
-                start_year, end_year = match
-                role, company = "", ""  # No role or company
-            elif len(match) == 5:  # "Month Year - Month Year / Month Year - Present" format
-                start_month, start_year, end_month, end_year = match[0], match[1], match[2], match[3]
-
-                # Convert month names to numbers
-                start_month_num = month_map.get(start_month.lower(), 1)
-                end_month_num = month_map.get(end_month.lower(), 1) if end_month else start_month_num
-
-                # Convert years to integers
-                start_year = int(start_year)
-                end_year = current_year if end_year.lower() in ["present", "current"] else int(end_year)
-
-                # Avoid duplicate experience periods
-                if (start_year, end_year, start_month_num, end_month_num) in seen_periods:
-                    continue
-                seen_periods.add((start_year, end_year, start_month_num, end_month_num))
-
-                # Calculate experience in months and convert to years
-                experience_months = (end_year - start_year) * 12 + (end_month_num - start_month_num)
-                years_of_experience = max(0, experience_months // 12)
-                total_experience += years_of_experience
-                continue
-
-            # Exclude internships and projects
-            if "intern" in role.lower() or "project" in role.lower():
-                continue
-
             try:
-                start_year = int(start_year)
-                end_year = current_year if end_year.lower() in ["present", "current"] else int(end_year)
+                start_year, end_year = match
+                start_year = int(re.search(r'\d{4}', start_year).group())
+                end_year = current_year if re.search(r'(?i)present|current', end_year) else int(re.search(r'\d{4}', end_year).group())
 
-                # Avoid duplicate experience periods
-                if (start_year, end_year) in seen_periods:
+                print(f"🔍 Detected Experience: Start={start_year}, End={end_year}")
+
+                # **Ignore education years**
+                if start_year in education_years or end_year in education_years:
+                    print(f"❌ Ignoring {start_year}-{end_year} (Education detected)")
                     continue
-                seen_periods.add((start_year, end_year))
 
-                # Calculate experience duration
-                years_of_experience = max(0, end_year - start_year)
-                total_experience += years_of_experience
+                # **Check If This Is an Internship (Only Ignore If Near "Intern")**
+                experience_text_snippet = text.lower()
+                snippet_start = max(text.lower().find(str(start_year)) - 50, 0)
+                snippet_end = min(text.lower().find(str(end_year)) + 50, len(text))
+                context_snippet = text.lower()[snippet_start:snippet_end]
+
+                if any(keyword in context_snippet for keyword in internship_keywords):
+                    print(f"❌ Ignoring {start_year}-{end_year} (Internship detected in job title)")
+                    continue
+
+                # **Allow Multiple Work Experiences (Fix Duplicate Issue)**
+                if (start_year, end_year) in seen_periods:
+                    print(f"⚠️ Skipping {start_year}-{end_year} (Duplicate detected, but allowing other entries)")
+                else:
+                    seen_periods.add((start_year, end_year))
+
+                    # **Calculate Experience Duration**
+                    years_of_experience = max(0, end_year - start_year)
+                    total_experience += years_of_experience
+                    print(f"✅ Added {years_of_experience} years. Total so far: {total_experience}")
+
             except ValueError:
-                continue  # Skip invalid year formats
+                print(f"⚠️ Skipping invalid date range: {match}")
+                continue
 
+    print(f"🎯 Final total experience: {total_experience} years")
     return f"{total_experience} years" if total_experience > 0 else "0 years"
-
 
 
 # Extract Job Role
