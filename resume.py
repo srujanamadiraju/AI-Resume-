@@ -102,14 +102,14 @@ def extract_experience(text):
             start_year, end_year = int(match[-2]), int(match[-1])
             education_years.update(range(start_year, end_year + 1))
 
-    print("Extracted education years:", education_years)
+    #print("Extracted education years:", education_years)
 
     # **Ensure "Experience" Section Exists**
     if not re.search(r'(?i)\b(work\s+experience|professional\s+experience|employment\s+history)\b', text):
         print("⚠️ No experience section found. Returning 0 years.")
         return "0 years"
 
-    print("✅ Experience section detected!")
+    #print("✅ Experience section detected!")
 
     # **Extract Work Experience**
     for pattern in experience_patterns:
@@ -120,11 +120,11 @@ def extract_experience(text):
                 start_year = int(re.search(r'\d{4}', start_year).group())
                 end_year = current_year if re.search(r'(?i)present|current', end_year) else int(re.search(r'\d{4}', end_year).group())
 
-                print(f"🔍 Detected Experience: Start={start_year}, End={end_year}")
+                #print(f"🔍 Detected Experience: Start={start_year}, End={end_year}")
 
                 # **Ignore education years**
                 if start_year in education_years or end_year in education_years:
-                    print(f"❌ Ignoring {start_year}-{end_year} (Education detected)")
+                    #print(f"❌ Ignoring {start_year}-{end_year} (Education detected)")
                     continue
 
                 # **Check If This Is an Internship (Only Ignore If Near "Intern")**
@@ -134,25 +134,25 @@ def extract_experience(text):
                 context_snippet = text.lower()[snippet_start:snippet_end]
 
                 if any(keyword in context_snippet for keyword in internship_keywords):
-                    print(f"❌ Ignoring {start_year}-{end_year} (Internship detected in job title)")
+                    #print(f"❌ Ignoring {start_year}-{end_year} (Internship detected in job title)")
                     continue
 
                 # **Allow Multiple Work Experiences (Fix Duplicate Issue)**
                 if (start_year, end_year) in seen_periods:
-                    print(f"⚠️ Skipping {start_year}-{end_year} (Duplicate detected, but allowing other entries)")
+                    #print(f"⚠️ Skipping {start_year}-{end_year} (Duplicate detected, but allowing other entries)")
                 else:
                     seen_periods.add((start_year, end_year))
 
                     # **Calculate Experience Duration**
                     years_of_experience = max(0, end_year - start_year)
                     total_experience += years_of_experience
-                    print(f"✅ Added {years_of_experience} years. Total so far: {total_experience}")
+                    #print(f"✅ Added {years_of_experience} years. Total so far: {total_experience}")
 
             except ValueError:
-                print(f"⚠️ Skipping invalid date range: {match}")
+                #print(f"⚠️ Skipping invalid date range: {match}")
                 continue
 
-    print(f"🎯 Final total experience: {total_experience} years")
+    #print(f"🎯 Final total experience: {total_experience} years")
     return f"{total_experience} years" if total_experience > 0 else "0 years"
 
 
