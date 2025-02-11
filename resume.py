@@ -72,27 +72,34 @@ def extract_skills(text):
 # Extract Experience
 def extract_experience(text):
     experience_patterns = [
-        r'(?i)(\b(?:internship|intern|virtual internship|graduate|program|fellowship)\b)\s+at\s+([\w\s&-]+)',  # Internship at Company
-        r'(?i)([\w\s&-]+):\s+([\w\s&-]*internship[\w\s&-]*)',  # Company: Internship Role
-        r'(?i)([A-Za-z\s-]+)\s+at\s+([\w\s&-]+)',  # Job roles with company names
+        r'(?i)([A-Za-z\s-]+)\s+at\s+([\w\s&-]+)\s+\((\d{4})-(\d{4}|\bPresent\b)\)',  # Role at Company (YYYY-YYYY/Present)
+        r'(?i)([A-Za-z\s-]+)\s+at\s+([\w\s&-]+),?\s+from\s+(\d{4})\s+to\s+(\d{4}|\bPresent\b)',  # Role at Company from YYYY to YYYY/Present
     ]
     
-    # List to store extracted experiences
-    experience_details = []
+    total_experience = 0
 
     for pattern in experience_patterns:
         matches = re.findall(pattern, text)
         for match in matches:
-            if isinstance(match, tuple) and len(match) == 2:
-                role, company = match
-                
-                # Clean unwanted cases (e.g., awards, events)
-                if "award" not in role.lower() and "event" not in role.lower():
-                    experience_details.append(f"{role.strip()} at {company.strip()}")
-            else:
-                experience_details.append(match.strip())
+            if len(match) == 4:
+                role, company, start_year, end_year = match
 
-    return ", ".join(experience_details) if experience_details else "Not Found"
+                # Exclude internships and projects
+                if "intern" in role.lower() or "project" in role.lower():
+                    continue
+                
+                # Convert years to integers
+                start_year = int(start_year)
+                if end_year.lower() == "present":
+                    end_year = datetime.now().year
+                else:
+                    end_year = int(end_year)
+                
+                # Calculate experience duration
+                years_of_experience = max(0, end_year - start_year)
+                total_experience += years_of_experience
+
+    return f"{total_experience} years" if total_experience > 0 else "0 years"
 
 
 # Extract Job Role
@@ -103,7 +110,17 @@ def extract_job_role(text):
         if token.text in JOB_ROLES:
             found_roles.add(token.text)
     
-    about_me_patterns = ["data science professional", "machine learning engineer", "software engineer", "data analyst"]
+    about_me_patterns = ["Software Engineer", "Data Scientist", "Machine Learning Engineer", "AI Engineer", 
+    "Deep Learning Engineer", "Data Analyst", "Business Analyst", "Backend Developer", 
+    "Frontend Developer", "Full Stack Developer", "Cloud Engineer", "DevOps Engineer", 
+    "Cybersecurity Analyst", "Embedded Systems Engineer", "Blockchain Developer", 
+    "Computer Vision Engineer", "NLP Engineer", "Product Manager", "QA Engineer", 
+    "Automation Engineer", "Data Engineer", "Database Administrator", "Software Architect", 
+    "System Administrator", "IT Support Engineer", "Game Developer", "Mobile App Developer", 
+    "AR/VR Developer", "Site Reliability Engineer", "AI Research Scientist", "Big Data Engineer", 
+    "BI Analyst", "Security Engineer", "Network Engineer", "IoT Engineer", 
+    "Technical Support Engineer", "Research Scientist", "Technical Program Manager", 
+    "DataOps Engineer", "MLOps Engineer", "Robotics Engineer", "Quantum Computing Engineer",]
     for phrase in about_me_patterns:
         if phrase in text.lower():
             found_roles.add(phrase.title())
