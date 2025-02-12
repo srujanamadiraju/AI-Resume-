@@ -37,9 +37,9 @@ def extract_resume_details(text):
     - Email
     - Phone Number
     - Skills
-    - Experience (in years)
-    - Job Role
-    - Domain
+    - Experience (in years,do not include projects or internships,if nothing found,return "0 years")
+    - Job Role (Specified in the resume,if nothing found,return "Not found")
+    - Domain (For example: Finance, Healthcare,IT,Business,Fashion etc. If nothing found, return "Not found")
     
     Resume Text:
     {text}
@@ -56,7 +56,6 @@ def extract_resume_details(text):
         "domain": "Finance"
     }}
     """
-
     response = llm.invoke(prompt).content
 
     # Extract JSON using regex (to handle any extra text)
