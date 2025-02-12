@@ -1,4 +1,3 @@
-%%writefile C:/Users/madir/OneDrive/Desktop/resume_app2.py
 import streamlit as st
 import pdfplumber
 import docx
@@ -11,7 +10,7 @@ from langchain_huggingface import HuggingFaceEmbeddings
 
 # Initialize LLM
 llm = ChatGroq(
-    groq_api_key="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",
+    groq_api_key="write_your_key",
     model="llama3-8b-8192",
     temperature=0,
     max_tokens=None,
