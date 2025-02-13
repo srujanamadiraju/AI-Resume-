@@ -10,7 +10,7 @@ from langchain_huggingface import HuggingFaceEmbeddings
 
 # Initialize LLM
 llm = ChatGroq(
-    groq_api_key="write_your_key",
+    groq_api_key="",
     model="llama3-8b-8192",
     temperature=0,
     max_tokens=None,
@@ -45,18 +45,41 @@ def extract_resume_details(text):
     - Skills
     - Experience (in years)
     - Job Role
-    - Domain (Industry category)
+    - Domain
     
     Resume Text:
     {text}
     
-    Return only JSON output.
+    Return only valid JSON output without any extra text, explanation, or formatting. 
+    Example output format:
+    {{
+        "name": "John Doe",
+        "email": "johndoe@example.com",
+        "phone": "+1234567890",
+        "skills": ["Python", "Machine Learning", "SQL"],
+        "experience": "5 years",
+        "job_role": "Data Scientist",
+        "domain": "Finance"
+    }}
     """
+
     response = llm.invoke(prompt).content
+
+    # Extract JSON using regex (to handle any extra text)
     json_match = re.search(r'\{.*\}', response, re.DOTALL)
+    
     if json_match:
-        return json.loads(json_match.group(0))
-    return {}
+        json_text = json_match.group(0)
+        try:
+            return json.loads(json_text)
+        except json.JSONDecodeError:
+            st.error("JSON Parse Error: Unable to decode valid JSON.")
+            return {}
+    else:
+        st.error("JSON Parse Error: No valid JSON found in the response.")
+        return {}
+
+
 
 # Retrieve similar resumes from ChromaDB
 def retrieve_similar_resumes(query, top_k=3):
