@@ -34,45 +34,71 @@ def extract_text_from_docx(docx_file):
     text = "\n".join(para.text.strip() for para in doc.paragraphs if para.text.strip())
     return text
 
-# Generate project recommendations based on job description
-def recommend_projects(job_description):
+# Generate recommended projects
+def recommend_projects(job_description, existing_projects):
     prompt = f"""
-    Recommend a list of projects relevant to the following job description:
+    Recommend 2-3 projects relevant to the following job description:
     {job_description}
     Provide a brief explanation of each project.
+    The output should be formatted as a list of projects, each having a title and a short description.
     """
-    return llm.invoke(prompt).content
+    recommended_projects = llm.invoke(prompt).content
+    
+    # Combine user-provided and recommended projects
+    final_projects = existing_projects + "\n\n" + recommended_projects if existing_projects else recommended_projects
+    return final_projects
 
-# Generate a new ATS-friendly resume based on user input
-def generate_resume(details, job_description):
+# Remove empty sections from the resume
+def remove_empty_sections(resume_text):
+    sections = resume_text.split("--------------------------------------------------------")
+    cleaned_sections = []
+    
+    for section in sections:
+        if "[" not in section and section.strip():  # Remove sections with placeholders or empty content
+            cleaned_sections.append(section.strip())
+    
+    return "\n--------------------------------------------------------\n".join(cleaned_sections)
+
+# Generate a new ATS-friendly resume with projects
+def generate_resume(details, job_description, projects):
+    final_projects = recommend_projects(job_description, projects)
+    
     prompt = f"""
     Generate a professional ATS-friendly resume based on the following details:
     {details}
+    Ensure the 'Projects' section includes the following:
+    {final_projects}
     Tailor the resume to align with the following job description:
     {job_description}
     Ensure the output follows a structured professional resume format with sections for Contact Information, Summary, Education, Skills, Experience, Projects, Achievements, and Certifications.
-    If any details are missing, skip that section in the resume(for example,freshers might not have experience).And do not give any extra information other than resume.
-    Strictly remove "Here's an ATS-friendly resume based on the provided details:" line at the beginning and the note section placed last in the pdf.
-    Make the headings bold and the content in normal font.Draw a line after each section.
+    If any details are missing, skip that section.
+    Strictly remove "Here's an ATS-friendly resume based on the provided details:" line at the beginning and any note section placed at the end.
+    Make the headings bold and the content in normal font. Draw a line after each section.
     """
-    return llm.invoke(prompt).content
+    resume_text = llm.invoke(prompt).content
+    return remove_empty_sections(resume_text)
 
-# Modify existing resume while keeping the original format
-def modify_resume(text, job_description):
+# Modify existing resume while keeping original format
+def modify_resume(text, job_description, projects):
+    final_projects = recommend_projects(job_description, projects)
+    
     prompt = f"""
     Modify the following resume to be ATS-friendly according to the given job description:
     Resume Text:
     {text}
+    Ensure the 'Projects' section includes the following:
+    {final_projects}
     Job Description:
     {job_description}
     Ensure the original format, structure, and layout remain unchanged. Only update the content to be more ATS-friendly by improving keyword relevance and alignment with the job description.
-    Do not add any additional content or sections that were not present in the original resume.Give only the resume,no need of any explanation.The resume should be ready to apply for a job.Do not add the line "Here's the modified ATS-friendly resume" and the note at the last in the pdf.
-    Strictly remove "Here's an ATS-friendly resume based on the provided details:" line at the beginning and the note section placed last in the pdf.
-    Make the headings bold and visible easily.Draw a line after each section.
+    Do not add additional content or sections not present in the original resume.
+    Strictly remove "Here's an ATS-friendly resume based on the provided details:" line at the beginning and any note section placed at the end.
+    Make the headings bold and visible. Draw a line after each section.
     """
-    return llm.invoke(prompt).content
+    modified_text = llm.invoke(prompt).content
+    return remove_empty_sections(modified_text)
 
-# Convert text to PDF while keeping formatting
+# Convert text to PDF
 def text_to_pdf(text, filename):
     pdf = FPDF()
     pdf.add_page()
@@ -86,7 +112,7 @@ def text_to_pdf(text, filename):
 # Streamlit UI
 st.title("AI Resume Generator")
 
-option = st.radio("Choose an option:", ["Upload Basic Details & Job Description", "Upload Resume & Job Description", "Recommend Projects"])
+option = st.radio("Choose an option:", ["Upload Basic Details & Job Description", "Upload Resume & Job Description"])
 
 if option == "Upload Basic Details & Job Description":
     st.subheader("Enter Your Details")
@@ -96,7 +122,7 @@ if option == "Upload Basic Details & Job Description":
     education = st.text_area("Education (School, College, Degree)")
     skills = st.text_area("Skills (comma-separated)")
     experience = st.text_area("Experience")
-    projects = st.text_area("Projects (along with a small description)")
+    projects = st.text_area("Projects (with a small description)")
     achievements = st.text_area("Achievements")
     certifications = st.text_area("Certifications")
     job_description = st.text_area("Job Description")
@@ -113,31 +139,8 @@ if option == "Upload Basic Details & Job Description":
             "achievements": achievements,
             "certifications": certifications,
         }
-        resume_text = generate_resume(user_details, job_description)
+        resume_text = generate_resume(user_details, job_description, projects)
         pdf_filename = "generated_resume.pdf"
         text_to_pdf(resume_text, pdf_filename)
         st.subheader("Generated Resume")
         st.download_button("Download Resume", open(pdf_filename, "rb"), file_name=pdf_filename, mime="application/pdf")
-
-if option == "Upload Resume & Job Description":
-    st.subheader("Upload Resume & Enter Job Description")
-    uploaded_file = st.file_uploader("Upload Resume (PDF or DOCX)", type=["pdf", "docx"])
-    job_description = st.text_area("Job Description")
-
-    if uploaded_file and job_description and st.button("Modify Resume"):
-        extracted_text = extract_text_from_pdf(uploaded_file) if uploaded_file.type == "application/pdf" else extract_text_from_docx(uploaded_file)
-        modified_resume = modify_resume(extracted_text, job_description)
-        pdf_filename = "modified_resume.pdf"
-        text_to_pdf(modified_resume, pdf_filename)
-        st.subheader("Modified Resume")
-        st.download_button("Download Modified Resume", open(pdf_filename, "rb"), file_name=pdf_filename, mime="application/pdf")
-
-if option == "Recommend Projects":
-    st.subheader("Enter Job Description")
-    job_description = st.text_area("Job Description")
-
-    if st.button("Recommend Projects"):
-        recommendations = recommend_projects(job_description)
-        st.subheader("Recommended Projects")
-        st.text_area("", recommendations, height=300)
-
