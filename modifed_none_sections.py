@@ -6,7 +6,8 @@ from fpdf import FPDF
 from langchain_groq import ChatGroq
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import Chroma
-# Initialize LLM
+import re 
+
 llm = ChatGroq(
     groq_api_key="",
     model="llama3-8b-8192",
@@ -16,18 +17,15 @@ llm = ChatGroq(
     max_retries=2,
 )
 
-# Initialize ChromaDB
 chroma_client = chromadb.PersistentClient(path="./chroma_db")
 embedding_function = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 vectorstore = Chroma(client=chroma_client, embedding_function=embedding_function)
 
-# Extract text from PDF
 def extract_text_from_pdf(pdf_file):
     with pdfplumber.open(pdf_file) as pdf:
         text = "\n".join(page.extract_text(layout=True) for page in pdf.pages if page.extract_text(layout=True))
     return text
 
-# Extract text from DOCX
 def extract_text_from_docx(docx_file):
     doc = docx.Document(docx_file)
     text = "\n".join(para.text.strip() for para in doc.paragraphs if para.text.strip())
@@ -49,16 +47,14 @@ def generate_resume(details, job_description):
     Include the following relevant projects in the resume:
     {project_section}
     Ensure the output follows a structured professional resume format with sections for Contact Information, Summary, Education, Skills, Experience, Projects, Achievements, and Certifications.
-    If any details are missing, skip that section in the resume (for example, freshers might not have experience). 
+    If any details are missing, skip that section in the resume (for example, freshers might not have experience). If the entry for a section says 'None' or 'none' or just left blank then don't include the section in the resume.
     Strictly remove "Here's an ATS-friendly resume based on the provided details:" line at the beginning and the note section placed last in the PDF.
     Make the headings bold and the content in normal font. Draw a line after each section.
     """
-    return llm.invoke(prompt).content
+    raw_text = llm.invoke(prompt).content
+    cleaned_text = clean_resume_text(raw_text)
+    return cleaned_text 
 
-
-# Modify existing resume while keeping the original format
-
-# Inside your function that modifies the resume
 def modify_resume(text, job_description):
     relevant_projects = fetch_relevant_projects(job_description)
 
@@ -66,37 +62,100 @@ def modify_resume(text, job_description):
     if relevant_projects:
         st.subheader("🔹 Relevant Projects Found:")
         for proj in relevant_projects:
-            st.write(f"**{proj['title']}**\n{proj['description']}\n---")
+            st.markdown(f"<p style='font-size:12px;'><b>{proj['title']}</b><br>{proj['description']}</p>", unsafe_allow_html=True)
+
+    existing_projects_section = extract_existing_projects(text)
 
     # Format projects to include in the prompt
     project_section = "\n".join(
         f"**{proj['title']}**\n{proj['description']}" for proj in relevant_projects
     ) if relevant_projects else "**No relevant projects found.**"
 
+    # Ensure missing projects are added
+    final_project_section = merge_projects(existing_projects_section, project_section)
+
     prompt = f"""
     Modify the following resume to be ATS-friendly according to the given job description:
-    ---
     Resume Text:
     {text}
-
-     ---
     Job Description:
     {job_description}
-
-    ---
-   🚀 **You MUST include the following relevant projects in the resume:** 🚀
-   {project_section}
-
-   🔹 Do not ignore or skip projects. Ensure they are seamlessly integrated into the experience or projects section.
-   🔹 Maintain the original resume format, structure, and layout. Only enhance content for better ATS optimization.
-   🔹 Do not add unnecessary text like "Here's your modified resume".
-   🔹 Make the headings bold and separate sections with a horizontal line and remove ** before the headings.
-"""
-
-    
+    Ensure the following projects are included in the resume:
+    {final_project_section}
+    Ensure the original format, structure, and layout remain unchanged. Only update the content to be more ATS-friendly by improving keyword relevance and alignment with the job description.
+    Do not add any additional content or sections that were not present in the original resume unless specified.
+    Strictly remove "Here's an ATS-friendly resume based on the provided details:" line at the beginning and the note section placed last in the PDF.
+    Make the headings bold and visible. Draw a line after each section.
+    """
 
     return llm.invoke(prompt).content
 
+
+    return modified_resume
+
+def clean_resume_text(resume_text):
+    """
+    Removes empty sections from the generated resume if they contain 'None', 'none', or are blank.
+    """
+    cleaned_lines = []
+    lines = resume_text.split("\n")
+    
+    filtered_sections = []
+    current_section = []
+    inside_section = False
+
+    for line in lines:
+        # If line is a section title (bold text)
+        if "**" in line:
+            # Process the previous section before starting a new one
+            if current_section and not all(content.strip().lower() in ["none", "", "(no relevant experience listed)"] for content in current_section[1:]):
+                filtered_sections.extend(current_section)  # Keep valid sections
+                filtered_sections.append("")  
+        
+            # Start a new section
+            current_section = [line]
+            inside_section = True
+        else:
+            if inside_section:
+                current_section.append(line)
+
+    if current_section and not all(content.strip().lower() in ["none", "", "(no relevant experience listed)"] for content in current_section[1:]):
+        filtered_sections.extend(current_section)
+
+    return "\n".join(filtered_sections).strip()
+
+        
+
+def generate_pdf(text):
+    """ Converts formatted resume text into a PDF file. """
+    pdf = FPDF()
+    pdf.set_auto_page_break(auto=True, margin=10)
+    pdf.add_page()
+    pdf.set_font("Arial", size=12)
+
+    lines = text.split("\n")
+    for line in lines:
+        if re.match(r"^[A-Z ]{3,}$", line.strip()):  # Detects headings in ALL CAPS
+            pdf.set_font("Arial", style='B', size=14)
+        else:
+            pdf.set_font("Arial", size=12)
+
+        pdf.cell(200, 7, line, ln=True)
+
+    # Save PDF as bytes for Streamlit
+    import io
+    pdf_output = io.BytesIO()
+    pdf.output(pdf_output, 'F')
+    return pdf_output.getvalue()
+
+def extract_existing_projects(resume_text):
+    match = re.search(r"(Projects|Relevant Projects)\s*([\s\S]*?)(?=\n[A-Z])", resume_text)
+    return match.group(2).strip() if match else ""  # Extracts projects if found
+
+def merge_projects(existing_projects, new_projects):
+    if not existing_projects:
+        return new_projects  # If no existing projects, use new ones
+    return f"{existing_projects}\n\n{new_projects}"  # Append new projects
 
 # Convert text to PDF while keeping formatting
 def text_to_pdf(text, filename):
@@ -161,7 +220,6 @@ def fetch_relevant_projects(job_description, num_projects=3):
 
     print(f"✅ Final Projects: {relevant_projects}")  # Debugging
     return relevant_projects
-
 
 
 # Streamlit UI
