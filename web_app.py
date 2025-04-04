@@ -3,7 +3,7 @@
 File: app.py
 Creation Time: Jan 30th 2024, 11:00 am
 Author: Saurabh Zinjad
-Developer Email: Saurabh Zinjad@gmail.com
+Developer Email: saurabhzinjad@gmail.com
 Copyright (c) 2023-2024 Saurabh Zinjad. All rights reserved | https://github.com/Ztrimus
 -----------------------------------------------------------------------
 '''
@@ -18,8 +18,10 @@ from zlm import AutoApplyModel
 from zlm.utils.utils import display_pdf, download_pdf, read_file, read_json
 from zlm.utils.metrics import jaccard_similarity, overlap_coefficient, cosine_similarity
 from zlm.variables import LLM_MAPPING
-import requests
 
+print("Installing playwright...")
+os.system("playwright install")
+os.system("sudo playwright install-deps")
 
 st.set_page_config(
     page_title="Resume Generator",
@@ -109,11 +111,14 @@ try:
 
     col_1, col_2, col_3 = st.columns(3)
     with col_1:
-        provider = "Hugging Face"
+        provider = st.selectbox("Select provider([OpenAI](https://openai.com/blog/openai-api), [Gemini Pro](https://ai.google.dev/)):", LLM_MAPPING.keys())
     with col_2:
-        model = "deepseek-ai/DeepSeek-V3-0324"
+        model = st.selectbox("Select model:", LLM_MAPPING[provider]['model'])
     with col_3:
-        api_key = st.text_input("Enter API key:", type="password", value="")
+        if provider != "Ollama":
+            api_key = st.text_input("Enter API key:", type="password", value="")
+        else:
+            api_key = None
     st.markdown("<sub><sup>💡 GPT-4 is recommended for better results.</sup></sub>", unsafe_allow_html=True)
 
     # Buttons side-by-side with styling
@@ -139,14 +144,15 @@ try:
             st.toast(":red[Please enter a job posting URL or paste the job description to get started]", icon="⚠️") 
             st.stop()
         
-        if api_key == "":
+        if api_key == "" and provider != "Llama":
             st.toast(":red[Please enter the API key to get started]", icon="⚠️")
+            
             st.stop()
         
         if file is not None and (url != "" or text != ""):
             download_resume_path = os.path.join(os.path.dirname(__file__), "output")
 
-            resume_llm = AutoApplyModel(api_key=api_key, model = model, downloads_dir=download_resume_path)
+            resume_llm = AutoApplyModel(api_key=api_key, provider=provider, model = model, downloads_dir=download_resume_path)
             
             # Save the uploaded file
             os.makedirs("uploads", exist_ok=True)
@@ -156,7 +162,7 @@ try:
         
             # Extract user data
             with st.status("Extracting user data..."):
-                user_data = resume_llm.user_data_extraction(file_path, is_st=True)
+                user_data = resume_llm.user_data_extraction(file_path, is_st=True) ############
                 st.write(user_data)
 
             shutil.rmtree(os.path.dirname(file_path))
@@ -169,9 +175,9 @@ try:
             # Extract job details
             with st.status("Extracting job details..."):
                 if url != "":
-                    job_details, jd_path = resume_llm.job_details_extraction(url=url, is_st=True)
+                    job_details, jd_path = resume_llm.job_details_extraction(url=url, is_st=True) #########################
                 elif text != "":
-                    job_details, jd_path = resume_llm.job_details_extraction(job_site_content=text, is_st=True)
+                    job_details, jd_path = resume_llm.job_details_extraction(job_site_content=text, is_st=True) #############
                 st.write(job_details)
 
             if job_details is None:
@@ -182,7 +188,7 @@ try:
             # Build Resume
             if get_resume_button:
                 with st.status("Building resume..."):
-                    resume_path, resume_details = resume_llm.resume_builder(job_details, user_data, is_st=True)
+                    resume_path, resume_details = resume_llm.resume_builder(job_details, user_data, is_st=True) ##################
                     # st.write("Outer resume_path: ", resume_path)
                     # st.write("Outer resume_details is None: ", resume_details is None)
                 resume_col_1, resume_col_2, resume_col_3 = st.columns([0.35, 0.3, 0.25])
@@ -228,7 +234,7 @@ try:
             # Build Cover Letter
             if get_cover_letter_button:
                 with st.status("Building cover letter..."):
-                    cv_details, cv_path = resume_llm.cover_letter_generator(job_details, user_data, is_st=True)
+                    cv_details, cv_path = resume_llm.cover_letter_generator(job_details, user_data, is_st=True) ###############
                 cv_col_1, cv_col_2 = st.columns([0.7, 0.3])
                 with cv_col_1:
                     st.subheader("Generated Cover Letter")

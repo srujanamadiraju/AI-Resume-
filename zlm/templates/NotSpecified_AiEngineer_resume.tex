@@ -1,0 +1,133 @@
+%==== PACKAGES AND OTHER DOCUMENT CONFIGURATIONS  ====%
+\documentclass{resume} % Use the custom resume.cls style
+\usepackage[left=0.25in,top=0.25in,right=0.25in,bottom=0.25in]{geometry} % Document margins
+\usepackage[T1]{fontenc}
+\usepackage{xcolor}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage{fontawesome} % For GitHub and LinkedIn symbols
+\usepackage{textcomp} % For mobile phone and email symbols
+% \usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
+\usepackage{xcolor}  % Required for defining custom colors
+\usepackage{hyperref}
+% Define your custom colors
+% \definecolor{myblue}{RGB}{173, 216, 246}
+% \definecolor{myblue}{RGB}{123, 176, 206}
+\definecolor{myblue}{RGB}{0, 164, 218}
+
+% Set hyperlink colors
+\hypersetup{
+    colorlinks=true,
+    linkcolor=myblue,
+    citecolor=myblue,
+    urlcolor=myblue
+}
+
+\usepackage{hyperref}
+
+%==== Headings ====%
+\name{Tanmay Chakraborty} % Your name
+\address{
+{\faPhone} \href{tel:+91{-}9062860379}{+91{-}9062860379} \quad {\faEnvelope} \href{mailto:chakrabortytanmay326@gmail.com}{chakrabortytanmay326@gmail.com} \quad }
+
+\begin{document}
+
+%===== WORK EXPERIENCE SECTION =====%
+    \begin{rSection}{Work Experience}
+                    \begin{rSubsection}
+                {Machine Learning Engineer}{May 2024 - Present}
+                                    {\normalfont{\textit{PwC India (Third Party Hiring by FirstMeridian Private Limited)}}}
+                                {\normalfont{\textit{Kolkata}}}
+                                    \item Developed a RAG Chatbot for a healthcare client by implementing advanced RAG techniques and handling complex scenarios such as tables, diagrams, and flowcharts, resulting in a 20\% improvement in response accuracy.
+                                    \item Built a table comparison tool using Python and ML by employing various similarity techniques, hypothesis testing, regular expressions, and BERT models to match columns based on names and values, leading to a 15\% increase in data processing efficiency.
+                                    \item Improved an Advanced Driver{-}Assistance System (ADAS) by implementing and tuning classification algorithms (Naive Bayes, Random Forest, Logistic Regression), achieving an 89\% F1 score using Random Forest and addressing data imbalance with SMOTE. Integrated GitHub Actions for CI/CD/Deployment, resulting in a 10\% reduction in deployment time.
+                            \end{rSubsection}
+                    \begin{rSubsection}
+                {Machine Learning Engineer}{October 2023 - May 2024}
+                                    {\normalfont{\textit{Sunix AI}}}
+                                {\normalfont{\textit{Remote}}}
+                                    \item Developed a Proof of Concept (PoC) for an object detection and tracking system for a sports client by using YOLOv8 and implementing image preprocessing techniques using OpenCV, achieving a 75\% MAPE and improving detection accuracy by 12\%.
+                                    \item Improved model performance by 10\% by optimizing hyperparameters and feature engineering techniques. 
+                                    \item Successfully delivered the project on time and within budget, exceeding client expectations.
+                            \end{rSubsection}
+                    \begin{rSubsection}
+                {ML Engineer}{January 2023 - September 2023}
+                                    {\normalfont{\textit{Rapyder Cloud Solutions}}}
+                                {\normalfont{\textit{Remote}}}
+                                    \item Developed an end{-}to{-}end healthcare analytics solution using AWS Sagemaker and Snowflake by implementing a complete MLOPS pipeline (CI/CD) for real{-}time predictions, resulting in a 25\% reduction in prediction latency.
+                                    \item Built an end{-}to{-}end automated object detection workflow using AWS Sagemaker's built{-}in Resnet object detector and CICD services (Codebuild, CodePipeline, CodeDeploy), improving the efficiency of the object detection process by 15\%.
+                                    \item Developed and deployed a machine learning solution on AWS Fargate to achieve serverless deployment with a load balancer, resulting in a 20\% reduction in infrastructure costs.
+                            \end{rSubsection}
+            \end{rSection}
+
+%==== EDUCATION SECTION ====%
+\begin{rSection}{Education}
+                        \textbf{Great Lakes Institute of Management, The University of Texas at Austin} \hfill {None - 2024} \\
+                            {PGP {-} Machine Learning}
+                         
+             
+         
+                        \textbf{West Bengal State University} \hfill {None - 2022} \\
+                            {B.SC Mathematics}
+                         
+             
+         
+    \end{rSection}
+
+% ==== PROJECTS SECTION =====%
+    \begin{rSection}{Projects}
+                    \begin{rSubsection}
+                                    {\href{https://github.com/example/fraud{-}detection}{AI{-}Powered Fraud Detection System}}
+                                {\normalfont{2021{-}03{-}01 - 2023{-}01{-}31}}{}{}
+                                    \item Developed a machine learning model using Python, TensorFlow, and NLP techniques (BERT) to detect fraudulent transactions in a banking dataset, resulting in a 20\% reduction in fraudulent transactions.
+                                    \item Processed and analyzed large datasets (over 100GB) using Pandas and NumPy, improving data processing efficiency by 15\%.
+                                    \item Deployed the model on AWS, ensuring high availability and scalability, which led to a 10\% increase in transaction processing speed.
+                            \end{rSubsection}
+                    \begin{rSubsection}
+                                    {\href{https://github.com/example/chatbot{-}sentiment}{Customer Sentiment Analysis for Banking Chatbot}}
+                                {\normalfont{2020{-}06{-}15 - 2022{-}05{-}15}}{}{}
+                                    \item Built an NLP model using PyTorch and GPT to analyze customer sentiment from text{-}based interactions with a banking chatbot, improving customer satisfaction scores by 12\%.
+                                    \item Utilized unsupervised learning techniques to identify key customer concerns and topics from chatbot conversations, leading to a 5\% increase in customer engagement.
+                                    \item Integrated the sentiment analysis model into the chatbot's workflow, enhancing its ability to resolve customer issues efficiently.
+                            \end{rSubsection}
+                    \begin{rSubsection}
+                                    {\href{https://github.com/example/loan{-}processing}{AI{-}Driven Loan Application Processing System}}
+                                {\normalfont{2019{-}09{-}01 - 2021{-}02{-}28}}{}{}
+                                    \item Designed and implemented an AI system using Scikit{-}learn and supervised learning techniques to automate loan application processing, reducing processing time by 30\%.
+                                    \item Improved the accuracy of loan application risk assessment by 15\% by incorporating external data sources and feature engineering techniques.
+                                    \item Deployed the system on GCP, ensuring secure and reliable processing of loan applications.
+                            \end{rSubsection}
+            \end{rSection}
+
+%==== TECHNICAL STRENGTHS SECTION ====%
+    \begin{rSection}{Technical Skills}
+        \begin{tabular}{ @{} l @{\hspace{1ex}} l }
+                                \textbf{Programming Languages}: Python\\
+                                \textbf{Cloud Platforms}: AWS, AWS Sagemaker, AWS Lambda, Api Gateway, EC2, AWS Fargate\\
+                                \textbf{NLP}: BERT, Transformers, Word2Vec, LLM, Natural Language Processing, Langchain, RAG(Different Rag Techniques)\\
+                                \textbf{Machine Learning}: Regression, Machine Learning, Feature Engineering, Dimensionality Reduction (PCA), Decision Tree, Boosting Techniques, SVM, Logistic Regression, Nave Bayes, Random Forest, K{-}Means Clustering, Hierarchical Clustering, DBScan, MLFLOW, MLOPS\\
+                                \textbf{Deep Learning}: Perceptron, Multi Layer Perceptron, Image Classification (VGG16, VGG19, Resnet etc), Object Detection(YOLO, R{-}CNN), Langchain, Llama Models\\
+                                \textbf{Data Processing}: Pandas, NumPy\\
+                                \textbf{Tools}: Jupyter Notebook, Docker, Agents\\
+                                \textbf{Other Skills}: Hypothesis testing, Sampling, Cross Validation\\
+                        \textbf{Certifications:} 
+                                            \href{None}{\textbf{Data Science Using Artificial Intelligence and Machine Learning, Deep Learning and Tableau}},\\
+                                            \href{None}{\textbf{AWS Certified ML Specialist}},\\
+                                 
+        \end{tabular}
+    \end{rSection}
+ 
+
+% ACHIEVEMENTS SECTION
+    \begin{rSection}{Achievements}
+        \begin{rSubsection}{}{}{}
+                            \item Built ATS{-}friendly AI Chatbot for banking applications, demonstrating proficiency in NLP and chatbot development.
+                            \item Developed an intelligent shop assistant AI agent using Python and machine learning libraries, showcasing expertise in data processing and model implementation.
+                            \item Created a Telegram AI chatbot integrating NLP models like BERT for improved text{-}based interactions, highlighting experience with NLP and relevant frameworks.
+                    \end{rSubsection}
+    \end{rSection}
+
+\newcommand\myfontsize{\fontsize{0.1pt}{0.1pt}\selectfont} \myfontsize \color{white}
+AI, ML, NLP, BERT, GPT, Python, TensorFlow, PyTorch, Scikit{-}learn, Pandas, NumPy, AWS, GCP, Azure, Git, banking, text{-}based applications, data processing, supervised learning, unsupervised learning, problem{-}solving, startup mindset, AI, ML, NLP, BERT, GPT, Python, TensorFlow, PyTorch, Scikit{-}learn, Pandas, NumPy, AWS, GCP, Azure, Git, banking, text{-}based applications, data processing, supervised learning, unsupervised learning, problem{-}solving, startup mindset, {artificial intelligence engineer, azure cognitive services exp, azure services, core azure services, azure cognitive and generative ai, genai, aws,  gcp, java, clean, efficient, maintainable code, react, front end, back end, ai solutions, data analysis, pretrained models, automl, software development principles, version control, testing, continuous integration and deployment, python, javascript, prompt engieering, frontend, backend, html, css, api, angular, development, machine learning, artificial intelligence, deep learning, data warehouse, data modeling, data extraction, data transformation, data loading, sql, etl, data quality, data governance, data privacy, data visualization, data controls, privacy, security, compliance, sla, aws, terabyte to petabyte scale data, full stack software development, cloud, security engineering, security architecture, ai/ml engineering, technical product management, microsoft office, google suite, visualization tools, scripting, coding, programming languages, analytical skills, collaboration, leadership, communication, presentation skills, computer vision, senior, ms or ph.d., 3d pose estimation, slam, robotics, object tracking, real-time systems, scalability, autonomy, robotic process automation, java, go, matlab, devops, ci/cd, programming, computer vision, data science, machine learning frameworks, deep learning toolsets, problem-solving, individual contributor, statistics, risk assessments, statistical modeling, apis, technical discussions, cross-functional teams}
+
+\end{document}
