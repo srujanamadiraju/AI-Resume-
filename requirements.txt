@@ -1,0 +1,17 @@
+validators 
+langchain-core 
+langchain-community 
+pdf2image 
+openai 
+google-generativeai 
+pypdf2 
+beautifulsoup4 
+scikit-learn
+nltk 
+langchain-ollama 
+playwright 
+unstructured 
+markdown-pdf 
+fpdf2
+boto3
+streamlit
