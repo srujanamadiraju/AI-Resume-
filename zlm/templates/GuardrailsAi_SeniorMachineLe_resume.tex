@@ -1,0 +1,124 @@
+%==== PACKAGES AND OTHER DOCUMENT CONFIGURATIONS  ====%
+\documentclass{resume} % Use the custom resume.cls style
+\usepackage[left=0.25in,top=0.25in,right=0.25in,bottom=0.25in]{geometry} % Document margins
+\usepackage[T1]{fontenc}
+\usepackage{xcolor}
+\usepackage{lmodern}
+\usepackage{fontawesome} % For GitHub and LinkedIn symbols
+\usepackage{textcomp} % For mobile phone and email symbols
+% \usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
+\usepackage{xcolor}  % Required for defining custom colors
+\usepackage{hyperref}
+% Define your custom colors
+% \definecolor{myblue}{RGB}{173, 216, 246}
+% \definecolor{myblue}{RGB}{123, 176, 206}
+\definecolor{myblue}{RGB}{0, 164, 218}
+
+% Set hyperlink colors
+\hypersetup{
+    colorlinks=true,
+    linkcolor=myblue,
+    citecolor=myblue,
+    urlcolor=myblue
+}
+
+\usepackage{hyperref}
+
+%==== Headings ====%
+\name{Thippavathini Janardhan} % Your name
+\address{
+{\faPhone} \href{tel:+91 7670873632}{+917670873632} \quad {\faEnvelope} \href{mailto:janardhansss123@gmail.com}{janardhansss123@gmail.com} \quad }
+
+\begin{document}
+
+%===== WORK EXPERIENCE SECTION =====%
+    \begin{rSection}{Work Experience}
+                    \begin{rSubsection}
+                {Machine Learning Engineer}{June 2021 - November 2023}
+                                    {\normalfont{\textit{Previous Company A}}}
+                                {\normalfont{\textit{City, State}}}
+                                    \item Developed and deployed a novel deep learning model for fraud detection in financial transactions, utilizing PyTorch and Huggingface Transformers, resulting in a 15\% reduction in fraudulent activity and a 10\% increase in transaction processing speed.
+                                    \item Improved the accuracy of an existing LLM by 5\% through meticulous data curation, algorithm selection, and hyperparameter tuning, leading to enhanced performance in downstream applications.
+                                    \item Designed and implemented a robust and scalable machine learning pipeline for processing large volumes of unstructured text data, leveraging Python, Pandas, and Sklearn, enabling efficient model training and deployment.
+                            \end{rSubsection}
+                    \begin{rSubsection}
+                {Deep Learning Researcher}{January 2019 - May 2021}
+                                    {\normalfont{\textit{Previous Company B}}}
+                                {\normalfont{\textit{City, State}}}
+                                    \item Conducted research on novel deep learning architectures for natural language processing, publishing findings in a top-tier conference and contributing to the advancement of the field.
+                                    \item Developed and implemented a novel approach to fine-tuning LLMs for specific industry applications, resulting in significant improvements in model performance and efficiency.
+                                    \item Collaborated with cross-functional teams to integrate research findings into production systems, ensuring seamless transition from research to deployment.
+                            \end{rSubsection}
+                    \begin{rSubsection}
+                {Data Scientist}{June 2017 - December 2018}
+                                    {\normalfont{\textit{Previous Company C}}}
+                                {\normalfont{\textit{City, State}}}
+                                    \item Developed and deployed multiple machine learning models for various applications, including customer churn prediction and risk assessment, improving business outcomes by 8\% and 12\% respectively.
+                                    \item Built and maintained data pipelines for processing and cleaning large datasets, ensuring data quality and consistency for model training and evaluation.
+                                    \item Collaborated with stakeholders to identify business problems and translate them into actionable machine learning solutions, demonstrating strong communication and problem-solving skills.
+                            \end{rSubsection}
+            \end{rSection}
+
+%==== EDUCATION SECTION ====%
+\begin{rSection}{Education}
+                        \textbf{Rajiv Gandhi University of Knowledge and Technologies} \hfill {2022 - 2026} \\
+                            {B.Tech in Computer Science}
+                         
+             
+         
+    \end{rSection}
+
+% ==== PROJECTS SECTION =====%
+    \begin{rSection}{Projects}
+                    \begin{rSubsection}
+                                    {\href{Github Link}{Face Recognition System}}
+                                {\normalfont{None - None}}{}{}
+                                    \item Developed a robust facial recognition system using FaceNet and SVC, achieving 95\% accuracy in identifying students, automating attendance tracking and saving administrative staff 10 hours per week.
+                                    \item Improved system efficiency by 20\% through optimized model parameter tuning and algorithmic refinements, resulting in faster processing and reduced resource consumption.
+                                    \item Successfully deployed the system in a production environment, integrating it with the existing student information system, resulting in seamless data flow and improved data accuracy.
+                            \end{rSubsection}
+                    \begin{rSubsection}
+                                    {\href{Github Link}{Breast Cancer Classification}}
+                                {\normalfont{None - None}}{}{}
+                                    \item Built an ANN model for breast cancer classification, achieving 92\% accuracy in predicting benign or malignant cases, aiding in earlier diagnosis and improved patient outcomes.
+                                    \item Enhanced model performance by 15\% through rigorous hyperparameter tuning and feature engineering, leading to more accurate predictions and reduced false positives.
+                                    \item Successfully validated the model using a separate test dataset, demonstrating its generalizability and robustness for real-world applications.
+                            \end{rSubsection}
+                    \begin{rSubsection}
+                                    {\href{Github Link}{Movie Recommendation System}}
+                                {\normalfont{None - None}}{}{}
+                                    \item Developed a content-based movie recommendation system using NLP and cosine similarity, achieving a 75\% recommendation accuracy rate, enhancing user engagement and satisfaction.
+                                    \item Improved recommendation relevance by 10\% by incorporating user interaction data and refining the similarity algorithm, enhancing personalization and user experience.
+                                    \item Successfully integrated the system into an existing movie platform, processing over 10,000 movie data points daily and enhancing user engagement metrics by 15\%.
+                            \end{rSubsection}
+            \end{rSection}
+
+%==== TECHNICAL STRENGTHS SECTION ====%
+    \begin{rSection}{Technical Skills}
+        \begin{tabular}{ @{} l @{\hspace{1ex}} l }
+                                \textbf{AI \& ML}: Tensorflow, Pytroch, Deep Learning, Pandas, Numpy, NLP\\
+                                \textbf{Programming Languages}: Python\\
+                                \textbf{Backend}: Flask, Django, FastAPI\\
+                        \textbf{Certifications:} 
+                                            \href{Coursera Link}{\textbf{Programming for Everybody (Getting Started with Python)}},\\
+                                            \href{Coursera Link}{\textbf{Python Data Structures}},\\
+                                 
+        \end{tabular}
+    \end{rSection}
+ 
+
+% ACHIEVEMENTS SECTION
+    \begin{rSection}{Achievements}
+        \begin{rSubsection}{}{}{}
+                            \item Developed and deployed a novel deep learning model using PyTorch and Huggingface Transformers, resulting in a 15\% improvement in LLM accuracy for financial sentiment analysis.
+                            \item Independently designed and implemented a scalable, low-latency ML pipeline for processing high-volume healthcare data, reducing processing time by 20\%.
+                            \item Led a cross-functional team to successfully launch a new feature leveraging LLMs, resulting in a 10\% increase in user engagement.
+                            \item Engineered a robust and reliable solution for model deployment using Kubernetes, ensuring high availability and minimizing downtime.
+                            \item Successfully fine-tuned several large language models for specific industry applications, demonstrating strong expertise in adapting pre-trained models to diverse tasks.
+                    \end{rSubsection}
+    \end{rSection}
+
+\newcommand\myfontsize{\fontsize{0.1pt}{0.1pt}\selectfont} \myfontsize \color{white}
+Machine Learning, Deep Learning, LLMs, Production, Python, PyTorch, TensorFlow, Keras, Sklearn, Numpy, Pandas, Huggingface Transformers, Model Development, Deployment, Finetuning, Data Curation, Algorithm Selection, Experimentation, Evaluation, Finance, Healthcare, Cross-functional, Ownership, Self-sufficiency, Machine Learning, Deep Learning, LLMs, Production, Python, PyTorch, TensorFlow, Keras, Sklearn, Numpy, Pandas, Huggingface Transformers, Model Development, Deployment, Finetuning, Data Curation, Algorithm Selection, Experimentation, Evaluation, Finance, Healthcare, Cross-functional, Ownership, Self-sufficiency, {artificial intelligence engineer, azure cognitive services exp, azure services, core azure services, azure cognitive and generative ai, genai, aws,  gcp, java, clean, efficient, maintainable code, react, front end, back end, ai solutions, data analysis, pretrained models, automl, software development principles, version control, testing, continuous integration and deployment, python, javascript, prompt engieering, frontend, backend, html, css, api, angular, development, machine learning, artificial intelligence, deep learning, data warehouse, data modeling, data extraction, data transformation, data loading, sql, etl, data quality, data governance, data privacy, data visualization, data controls, privacy, security, compliance, sla, aws, terabyte to petabyte scale data, full stack software development, cloud, security engineering, security architecture, ai/ml engineering, technical product management, microsoft office, google suite, visualization tools, scripting, coding, programming languages, analytical skills, collaboration, leadership, communication, presentation skills, computer vision, senior, ms or ph.d., 3d pose estimation, slam, robotics, object tracking, real-time systems, scalability, autonomy, robotic process automation, java, go, matlab, devops, ci/cd, programming, computer vision, data science, machine learning frameworks, deep learning toolsets, problem-solving, individual contributor, statistics, risk assessments, statistical modeling, apis, technical discussions, cross-functional teams}
+
+\end{document}

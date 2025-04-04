@@ -1,0 +1,9 @@
+__pycache__
+.env
+output
+*.DS_Store
+dist
+.venv
+.anima
+
+myenv
