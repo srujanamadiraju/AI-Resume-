@@ -1,26 +1,52 @@
 \documentclass{article}
 \usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\titleformat{\section}{\large\bfseries}{}{0em}{}
+
 \begin{document}
 
 \section*{Resume}
 
-\textbf{Name:} {{ name }}
-
-\textbf{Email:} {{ email }}
-
-\textbf{Phone:} {{ phone }}
+\textbf{Name:} {{ name }} \\
+\textbf{Email:} {{ email }} \\
+\textbf{Phone:} {{ phone }} \\
+\textbf{GitHub:} {{ github }} \\
+\textbf{LinkedIn:} {{ linkedin }}
 
 \section*{Education}
+\begin{itemize}[leftmargin=*]
 {% for edu in education %}
-- {{ edu }}
+    \item {{ edu.degree }}, {{ edu.institution }} ({{ edu.duration }})
 {% endfor %}
+\end{itemize}
 
 \section*{Skills}
-{{ skills | join(', ') }}
-
-\section*{Experience}
-{% for job in work_experience %}
-- {{ job }}
+\begin{itemize}[leftmargin=*]
+{% for skill in skills %}
+    \item {{ skill }}
 {% endfor %}
+\end{itemize}
+
+\section*{Certifications}
+\begin{itemize}[leftmargin=*]
+{% for cert in certifications %}
+    \item {{ cert.name }} – {{ cert.issuer }}
+{% endfor %}
+\end{itemize}
+
+\section*{Projects}
+\begin{itemize}[leftmargin=*]
+{% for proj in projects %}
+    \item \textbf{ {{ proj.name }} } – {{ proj.description }}
+{% endfor %}
+\end{itemize}
+
+\section*{Achievements}
+\begin{itemize}[leftmargin=*]
+{% for ach in achievements %}
+    \item {{ ach.name }} – {{ ach.institution }}
+{% endfor %}
+\end{itemize}
 
 \end{document}
