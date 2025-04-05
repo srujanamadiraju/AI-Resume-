@@ -8,8 +8,8 @@ Copyright (c) 2023-2024 Saurabh Zinjad. All rights reserved | https://github.com
 -----------------------------------------------------------------------
 '''
 
-from zlm.prompts.sections_prompt import EXPERIENCE, SKILLS, PROJECTS, EDUCATIONS, CERTIFICATIONS, ACHIEVEMENTS
-from zlm.schemas.sections_schemas import Achievements, Certifications, Educations, Experiences, Projects, SkillSections
+from models.resume_converter.zlm.prompts.sections_prompt import EXPERIENCE, SKILLS, PROJECTS, EDUCATIONS, CERTIFICATIONS, ACHIEVEMENTS
+from models.resume_converter.zlm.schemas.sections_schemas import Achievements, Certifications, Educations, Experiences, Projects, SkillSections
 
 GPT_EMBEDDING_MODEL = "text-embedding-ada-002"
 # text-embedding-3-large, text-embedding-3-small

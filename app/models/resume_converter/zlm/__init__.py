@@ -9,15 +9,15 @@ import numpy as np
 from langchain.prompts import PromptTemplate
 from langchain_core.output_parsers import JsonOutputParser
 
-from zlm.schemas.sections_schemas import ResumeSchema
-from zlm.utils import utils
-from zlm.utils.latex_ops import latex_to_pdf
-from zlm.utils.llm_models import ChatGPT, Gemini, OllamaModel
-from zlm.utils.data_extraction import read_data_from_url, extract_text
-from zlm.utils.metrics import jaccard_similarity, overlap_coefficient, cosine_similarity, vector_embedding_similarity
-from zlm.prompts.resume_prompt import CV_GENERATOR, RESUME_WRITER_PERSONA, JOB_DETAILS_EXTRACTOR, RESUME_DETAILS_EXTRACTOR
-from zlm.schemas.job_details_schema import JobDetails
-from zlm.variables import DEFAULT_LLM_MODEL, DEFAULT_LLM_PROVIDER, LLM_MAPPING, section_mapping
+from models.resume_converter.zlm.schemas.sections_schemas import ResumeSchema
+from models.resume_converter.zlm.utils import utils
+from models.resume_converter.zlm.utils.latex_ops import latex_to_pdf
+from models.resume_converter.zlm.utils.llm_models import ChatGPT, Gemini, OllamaModel
+from models.resume_converter.zlm.utils.data_extraction import read_data_from_url, extract_text
+from models.resume_converter.zlm.utils.metrics import jaccard_similarity, overlap_coefficient, cosine_similarity, vector_embedding_similarity
+from models.resume_converter.zlm.prompts.resume_prompt import CV_GENERATOR, RESUME_WRITER_PERSONA, JOB_DETAILS_EXTRACTOR, RESUME_DETAILS_EXTRACTOR
+from models.resume_converter.zlm.schemas.job_details_schema import JobDetails
+from models.resume_converter.zlm.variables import DEFAULT_LLM_MODEL, DEFAULT_LLM_PROVIDER, LLM_MAPPING, section_mapping
 
 module_dir = os.path.dirname(__file__)
 demo_data_path = os.path.join(module_dir, "demo_data", "user_profile.json")
@@ -86,7 +86,6 @@ class AutoApplyModel:
         resume_text = extract_text(pdf_path)
 
         json_parser = JsonOutputParser(pydantic_object=ResumeSchema)
-
         prompt = PromptTemplate(
             template=RESUME_DETAILS_EXTRACTOR,
             input_variables=["resume_text"],
@@ -94,6 +93,8 @@ class AutoApplyModel:
             ).format(resume_text=resume_text)
 
         resume_json = self.llm.get_response(prompt=prompt, need_json_output=True)
+        print("d1")
+        
         return resume_json
 
     @utils.measure_execution_time
@@ -287,11 +288,11 @@ class AutoApplyModel:
             # st.write(f"resume_path: {resume_path}")
 
 
-            resume_latex = latex_to_pdf(resume_details, resume_path)
+            tex_path,resume_latex = latex_to_pdf(resume_details, resume_path)
             # st.write(f"resume_pdf_path: {resume_pdf_path}")
 
 
-            return resume_path, resume_details
+            return tex_path, resume_details , resume_latex
         except Exception as e:
             print(e)
             # st.write("Error: \n\n",e)

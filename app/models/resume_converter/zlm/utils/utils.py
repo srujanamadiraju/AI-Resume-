@@ -27,7 +27,7 @@ OS_SYSTEM = platform.system().lower()
 
 def write_file(file_path, data):
     with open(file_path, "w") as file:
-        file.write(data)
+        file.write(data) # writing latex data to NotSpecified_MachineLearning_resume.tex
 
 
 def read_file(file_path, mode="r"):

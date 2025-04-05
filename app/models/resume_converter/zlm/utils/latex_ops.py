@@ -11,7 +11,7 @@ Copyright (c) 2023 Saurabh Zinjad. All rights reserved | GitHub: Ztrimus
 import os
 import jinja2
 # import streamlit as st
-from zlm.utils.utils import write_file, save_latex_as_pdf
+from models.resume_converter.zlm.utils.utils import write_file, save_latex_as_pdf
 
 def escape_for_latex(data):
     if isinstance(data, dict):
@@ -77,11 +77,12 @@ def latex_to_pdf(json_resume, dst_path):
         write_file(tex_temp_path, resume_latex)
         
         print("hi3")
-        print(tex_temp_path)
+        print(tex_temp_path) # -> path of latex file
+        # print(resume_latex)
 
-        save_latex_as_pdf(tex_temp_path, dst_path)
+        # save_latex_as_pdf(tex_temp_path, dst_path)
 
-        return resume_latex
+        return tex_temp_path,resume_latex
     except Exception as e:
         print(e)
         return None

@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
 
-from routes import dt
+from routes import dt , resume
 
 app = FastAPI()
 
@@ -10,6 +10,8 @@ def read_root():
     return {"message": "Welcome to FastAPI!"}
 
 app.include_router(dt.router, prefix="/api", tags=["API"])
+app.include_router(resume.router, prefix="/api", tags=["API"])
+
 
 
 if __name__ == "__main__":

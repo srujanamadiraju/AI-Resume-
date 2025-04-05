@@ -36,14 +36,16 @@ class Link(BaseModel):
     name: str = Field(description="The name or title of the link.")
     link: str = Field(description="The URL of the link.")
 
+# 🔧 FIXED: Removed problematic commas and unnecessary Ellipsis
 class Project(BaseModel):
-    name: str = Field(description="The name or title of the project."),
-    type: str | None = Field(description="The type or category of the project, such as hackathon, publication, professional, and academic."),
+    name: str = Field(description="The name or title of the project.")  # 🔥 removed comma
+    type: Optional[str] = Field(description="The type or category of the project, such as hackathon, publication, professional, and academic.")  # 🔥 Optional[str]
     link: str = Field(description="A link to the project repository or demo.")
     resources: Optional[List[Link]] = Field(description="Additional resources related to the project, such as documentation, slides, or videos.")
-    from_date: str = Field(description="The start date of the project. e.g. Aug 2023"),
-    to_date: str = Field(description="The end date of the project. e.g. Nov 2023"),
+    from_date: str = Field(description="The start date of the project. e.g. Aug 2023")  # 🔥 removed comma
+    to_date: str = Field(description="The end date of the project. e.g. Nov 2023")  # 🔥 removed comma
     description: List[str] = Field(description="A list of 3 bullet points describing the project experience, tailored to match job requirements. Each bullet point should follow the 'Did X by doing Y, achieved Z' format, quantify impact, implicitly use STAR methodology, use strong action verbs, and be highly relevant to the specific job. Ensure clarity, active voice, and impeccable grammar.")
+
 
 class Projects(BaseModel):
     projects: List[Project] = Field(description="Project experiences, including project name, type, link, resources, dates, and description.")

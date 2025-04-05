@@ -4,10 +4,14 @@ import shutil
 import zipfile
 import base64
 
-from zlm import AutoApplyModel
-from zlm.utils.utils import read_file
-from zlm.utils.metrics import jaccard_similarity, overlap_coefficient, cosine_similarity
-from zlm.variables import LLM_MAPPING
+import nltk
+from nltk.tokenize import word_tokenize
+import re
+
+from models.resume_converter.zlm import AutoApplyModel
+from models.resume_converter.zlm.utils.utils import read_file
+from models.resume_converter.zlm.utils.metrics import jaccard_similarity, overlap_coefficient, cosine_similarity
+from models.resume_converter.zlm.variables import LLM_MAPPING
 
 from dotenv import load_dotenv
 
@@ -55,7 +59,7 @@ def generate_resume(api_key, provider, model, input_file_path, jd_url="", jd_tex
 
         print("[INFO] Extracting user data from resume...")
         user_data = resume_llm.user_data_extraction(input_file_path, is_st=False)
-        print("[USER DATA]", user_data)
+        # print("[USER DATA]", user_data)
 
         if user_data is None:
             print("[ERROR] Could not extract user data.")
@@ -67,7 +71,7 @@ def generate_resume(api_key, provider, model, input_file_path, jd_url="", jd_tex
         else:
             job_details, jd_path = resume_llm.job_details_extraction(job_site_content=jd_text, is_st=False)
 
-        print("[JOB DETAILS]", job_details)
+        # print("[JOB DETAILS]", job_details)
 
         if job_details is None:
             print("[ERROR] Could not extract job details.")
@@ -75,22 +79,33 @@ def generate_resume(api_key, provider, model, input_file_path, jd_url="", jd_tex
 
         if get_resume:
             print("[INFO] Generating Resume...")
-            resume_path, resume_details = resume_llm.resume_builder(job_details, user_data, is_st=False)
-            print(f"[RESUME GENERATED] -> {resume_path}")
+            tex_path, resume_details , resume_latex = resume_llm.resume_builder(job_details, user_data, is_st=False)
+            print(f"[TEX GENERATED PATH] -> {tex_path}")
             
-            print(resume_path)
-
-            print("[INFO] Calculating resume metrics...")
-            for metric in ['overlap_coefficient', 'cosine_similarity']:
-                fn = globals()[metric]
-                user_score = fn(json.dumps(resume_details), json.dumps(user_data))
-                job_alignment_score = fn(json.dumps(resume_details), json.dumps(job_details))
-                job_match_score = fn(json.dumps(user_data), json.dumps(job_details))
+        metrics_dict = {}
+        for metric in ['overlap_coefficient', 'cosine_similarity']:
+            try:
+                print(f"[INFO] Calculating metric: {metric}")
+                if metric == 'overlap_coefficient':
+                    user_score = overlap_coefficient(json.dumps(resume_details), json.dumps(user_data))
+                    job_alignment_score = overlap_coefficient(json.dumps(resume_details), json.dumps(job_details))
+                    job_match_score = overlap_coefficient(json.dumps(user_data), json.dumps(job_details))
+                else:
+                    fn = globals()[metric]
+                    user_score = fn(json.dumps(resume_details), json.dumps(user_data))
+                    job_alignment_score = fn(json.dumps(resume_details), json.dumps(job_details))
+                    job_match_score = fn(json.dumps(user_data), json.dumps(job_details))
+                print(user_score)
 
                 print(f"[METRIC: {metric}]")
                 print(f"  - User Personalization: {user_score:.3f}")
                 print(f"  - Job Alignment: {job_alignment_score:.3f}")
                 print(f"  - Job Match: {job_match_score:.3f}")
+                
+                metrics_dict[metric] = {"user_score":user_score,"job_alignment_score":job_alignment_score,"job_match_score":job_match_score}
+            except Exception as e:
+                print(f"[ERROR] Failed on metric {metric}: {e}")
+
 
         if get_cover_letter:
             print("[INFO] Generating Cover Letter...")
@@ -99,19 +114,39 @@ def generate_resume(api_key, provider, model, input_file_path, jd_url="", jd_tex
             print("[COVER LETTER CONTENT]\n", cv_details)
 
         print("[SUCCESS] ✅ Done generating documents.")
+        
+        return resume_latex , metrics_dict
 
     except Exception as e:
         print(f"[ERROR] An exception occurred: {e}")
 
 
+def overlap_coefficient(text1, text2):
+    
+    # Use a simple regex tokenizer as an alternative
+    def simple_tokenize(text):
+        # Convert to lowercase and split by non-alphanumeric characters
+        return re.findall(r'\w+', text.lower())
+    
+    tokens1 = set(simple_tokenize(text1))
+    tokens2 = set(simple_tokenize(text2))
+    intersection = tokens1.intersection(tokens2)
+    smallest_set_size = min(len(tokens1), len(tokens2))
+    if smallest_set_size == 0:
+        return 0.0
+    return len(intersection) / smallest_set_size
+
+
 # Example usage:
-if __name__ == "__main__":
-    load_dotenv()
+def convert_resume(file_path,job_text):
+    load_dotenv(r"app\models\resume_converter\.env")
     print("janardhan")
-    api_key = os.getenv("GEMINI_API_KEY")
+    api_key = "AIzaSyA6eXBAwTkNMLVKo9gHj4h0kJyrkktnOAg"
     print(api_key)
     provider = "Gemini"
     model = "gemini-1.5-flash-latest"
-    file_path = r"app\models\resume-converter\uploads\janardhan_resume.pdf"
-    job_text = "We’re hiring a Machine Learning Engineer to build scalable AI solutions for healthcare diagnostics. Responsibilities include model development, deployment, and optimizing real-time performance.Requirements: Proficiency in Python, TensorFlow/PyTorch, and experience with medical imaging datasets."
-    generate_resume(api_key, provider, model, input_file_path=file_path, jd_text=job_text, get_resume=True, get_cover_letter=True)
+    # file_path = r"app\models\resume-converter\uploads\janardhan_resume.pdf"
+    # job_text = "We’re hiring a Machine Learning Engineer to build scalable AI solutions for healthcare diagnostics. Responsibilities include model development, deployment, and optimizing real-time performance.Requirements: Proficiency in Python, TensorFlow/PyTorch, and experience with medical imaging datasets."
+    resume_latex , metrics_dict = generate_resume(api_key, provider, model, input_file_path=file_path, jd_text=job_text, get_resume=True, get_cover_letter=False)
+    
+    return resume_latex , metrics_dict

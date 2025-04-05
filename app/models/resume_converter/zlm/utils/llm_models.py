@@ -17,8 +17,8 @@ from langchain_ollama import OllamaEmbeddings
 import google.generativeai as genai
 from google.generativeai.types.generation_types import GenerationConfig
 
-from zlm.utils.utils import parse_json_markdown
-from zlm.variables import GEMINI_EMBEDDING_MODEL, GPT_EMBEDDING_MODEL, OLLAMA_EMBEDDING_MODEL
+from models.resume_converter.zlm.utils.utils import parse_json_markdown
+from models.resume_converter.zlm.variables import GEMINI_EMBEDDING_MODEL, GPT_EMBEDDING_MODEL, OLLAMA_EMBEDDING_MODEL
 
 class ChatGPT:
     def __init__(self, api_key, model, system_prompt):
