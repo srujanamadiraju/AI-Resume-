@@ -25,6 +25,7 @@ from langchain_core.output_parsers import JsonOutputParser
 OS_SYSTEM = platform.system().lower()
 
 
+
 def write_file(file_path, data):
     with open(file_path, "w") as file:
         file.write(data) # writing latex data to NotSpecified_MachineLearning_resume.tex
