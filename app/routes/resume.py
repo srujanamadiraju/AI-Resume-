@@ -24,9 +24,10 @@ async def convert_resume_route(
         with open(file_path, "wb") as buffer:
             shutil.copyfileobj(resume_file.file, buffer)
         
-        resume_latex , metrics = convert_resume(file_path,job_description)
+        resume_latex , resume_cls , metrics = convert_resume(file_path,job_description)
         result = {
             "resume_latex":resume_latex,
+            "resume_cls":resume_cls,
             "metrics":metrics
         }
         

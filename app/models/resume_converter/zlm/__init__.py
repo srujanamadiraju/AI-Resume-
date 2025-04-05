@@ -93,7 +93,6 @@ class AutoApplyModel:
             ).format(resume_text=resume_text)
 
         resume_json = self.llm.get_response(prompt=prompt, need_json_output=True)
-        print("d1")
         
         return resume_json
 
