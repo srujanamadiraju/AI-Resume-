@@ -2,51 +2,82 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{enumitem}
 \usepackage{titlesec}
+\usepackage{hyperref}
 \titleformat{\section}{\large\bfseries}{}{0em}{}
 
 \begin{document}
 
 \section*{Resume}
 
-\textbf{Name:} {{ name }} \\
-\textbf{Email:} {{ email }} \\
-\textbf{Phone:} {{ phone }} \\
-\textbf{GitHub:} {{ github }} \\
-\textbf{LinkedIn:} {{ linkedin }}
+\textbf{Name:} {{ personal_information.name }} \\
+\textbf{Email:} {{ personal_information.email }} \\
+\textbf{Phone:} {{ personal_information.phone }} \\
 
+{% if personal_information.GitHub and personal_information.GitHub|lower != "null" %}
+\textbf{GitHub:} \href{{ personal_information.GitHub }}{{ personal_information.GitHub }} \\
+{% endif %}
+{% if personal_information.LinkedIn and personal_information.LinkedIn|lower != "null" %}
+\textbf{LinkedIn:} \href{{ personal_information.LinkedIn }}{{ personal_information.LinkedIn }} \\
+{% endif %}
+
+{% if aboutMe %}
+\section*{About Me}
+\noindent
+{{ aboutMe }}
+{% endif %}
+
+{% if education %}
 \section*{Education}
 \begin{itemize}[leftmargin=*]
-{% for edu in education %}
-    \item {{ edu.degree }}, {{ edu.institution }} ({{ edu.duration }})
-{% endfor %}
+    {% for edu in education %}
+    \item \textbf{{ edu.degree }}, {{ edu.institution }} ({{ edu.dates }}){% if edu.gpa %} -- GPA: {{ edu.gpa }}{% elif edu.marks %} -- Marks: {{ edu.marks }}{% endif %}
+    {% endfor %}
 \end{itemize}
+{% endif %}
 
+{% if skills %}
 \section*{Skills}
 \begin{itemize}[leftmargin=*]
-{% for skill in skills %}
-    \item {{ skill }}
-{% endfor %}
+    {% if skills.programming_languages %}
+    \item \textbf{Programming Languages:} {{ skills.programming_languages | join(", ") }}
+    {% endif %}
+    {% if skills.scripting_languages %}
+    \item \textbf{Scripting Languages:} {{ skills.scripting_languages | join(", ") }}
+    {% endif %}
+    {% if skills.databases %}
+    \item \textbf{Databases:} {{ skills.databases | join(", ") }}
+    {% endif %}
+    {% if skills.tools %}
+    \item \textbf{Tools:} {{ skills.tools | join(", ") }}
+    {% endif %}
 \end{itemize}
+{% endif %}
 
+{% if certifications %}
 \section*{Certifications}
 \begin{itemize}[leftmargin=*]
-{% for cert in certifications %}
-    \item {{ cert.name }} – {{ cert.issuer }}
-{% endfor %}
+    {% for cert in certifications %}
+    \item {{ cert }}
+    {% endfor %}
 \end{itemize}
+{% endif %}
 
+{% if projects %}
 \section*{Projects}
 \begin{itemize}[leftmargin=*]
-{% for proj in projects %}
-    \item \textbf{ {{ proj.name }} } – {{ proj.description }}
-{% endfor %}
+    {% for proj in projects %}
+    \item \textbf{{ proj.title }} -- {{ proj.description }}
+    {% endfor %}
 \end{itemize}
+{% endif %}
 
+{% if achievements %}
 \section*{Achievements}
 \begin{itemize}[leftmargin=*]
-{% for ach in achievements %}
-    \item {{ ach.name }} – {{ ach.institution }}
-{% endfor %}
+    {% for a in achievements %}
+    \item {{ a }}
+    {% endfor %}
 \end{itemize}
+{% endif %}
 
 \end{document}
