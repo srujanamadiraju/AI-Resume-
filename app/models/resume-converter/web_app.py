@@ -9,6 +9,8 @@ from zlm.utils.utils import read_file
 from zlm.utils.metrics import jaccard_similarity, overlap_coefficient, cosine_similarity
 from zlm.variables import LLM_MAPPING
 
+from dotenv import load_dotenv
+
 
 def encode_tex_file(file_path):
     try:
@@ -75,6 +77,8 @@ def generate_resume(api_key, provider, model, input_file_path, jd_url="", jd_tex
             print("[INFO] Generating Resume...")
             resume_path, resume_details = resume_llm.resume_builder(job_details, user_data, is_st=False)
             print(f"[RESUME GENERATED] -> {resume_path}")
+            
+            print(resume_path)
 
             print("[INFO] Calculating resume metrics...")
             for metric in ['overlap_coefficient', 'cosine_similarity']:
@@ -102,9 +106,12 @@ def generate_resume(api_key, provider, model, input_file_path, jd_url="", jd_tex
 
 # Example usage:
 if __name__ == "__main__":
-    api_key = "your-api-key"
-    provider = "OpenAI"
-    model = "gpt-4"
-    file_path = "uploads/sample_resume.pdf"
-    job_text = "We are looking for a Python developer with experience in FastAPI and AI..."
+    load_dotenv()
+    print("janardhan")
+    api_key = os.getenv("GEMINI_API_KEY")
+    print(api_key)
+    provider = "Gemini"
+    model = "gemini-1.5-flash-latest"
+    file_path = r"app\models\resume-converter\uploads\janardhan_resume.pdf"
+    job_text = "We’re hiring a Machine Learning Engineer to build scalable AI solutions for healthcare diagnostics. Responsibilities include model development, deployment, and optimizing real-time performance.Requirements: Proficiency in Python, TensorFlow/PyTorch, and experience with medical imaging datasets."
     generate_resume(api_key, provider, model, input_file_path=file_path, jd_text=job_text, get_resume=True, get_cover_letter=True)

@@ -1,18 +1,10 @@
-'''
------------------------------------------------------------------------
-File: __init__.py
-Creation Time: Feb 8th 2024, 2:59 pm
-Author: Saurabh Zinjad
-Developer Email: saurabhzinjad@gmail.com
-Copyright (c) 2023-2024 Saurabh Zinjad. All rights reserved | https://github.com/Ztrimus
------------------------------------------------------------------------
-'''
+
 import os
 import json
 import re
 import validators
 import numpy as np
-import streamlit as st
+# import streamlit as st
 
 from langchain.prompts import PromptTemplate
 from langchain_core.output_parsers import JsonOutputParser
@@ -180,8 +172,8 @@ class AutoApplyModel:
 
         except Exception as e:
             print(e)
-            st.write("Please try pasting the job description text instead of the URL.")
-            st.error(f"Error in Job Details Parsing, {e}")
+            # st.write("Please try pasting the job description text instead of the URL.")
+            # st.error(f"Error in Job Details Parsing, {e}")
             return None, None
  
     @utils.measure_execution_time
@@ -219,7 +211,7 @@ class AutoApplyModel:
             return cover_letter, cv_path.replace(".txt", ".pdf")
         except Exception as e:
             print(e)
-            st.write("Error: \n\n",e)
+            # st.write("Error: \n\n",e)
             return None, None
 
 
@@ -240,12 +232,13 @@ class AutoApplyModel:
         """
         try:
             print("\nGenerating Resume Details...")
-            if is_st: st.toast("Generating Resume Details...")
+            # if is_st:
+            #     print("Generating Resume Details...")
 
             resume_details = dict()
 
             # Personal Information Section
-            if is_st: st.toast("Processing Resume's Personal Info Section...")
+            print("Processing Resume's Personal Info Section...")
             resume_details["personal"] = { 
                 "name": user_data["name"], 
                 "phone": user_data["phone"], 
@@ -253,13 +246,13 @@ class AutoApplyModel:
                 "github": user_data["media"]["github"], 
                 "linkedin": user_data["media"]["linkedin"]
                 }
-            st.markdown("**Personal Info Section**")
-            st.write(resume_details)
+            # st.markdown("**Personal Info Section**")
+            # st.write(resume_details)
 
             # Other Sections
             for section in ['work_experience', 'projects', 'skill_section', 'education', 'certifications', 'achievements']:
                 section_log = f"Processing Resume's {section.upper()} Section..."
-                if is_st: st.toast(section_log)
+                print(section_log)
 
                 json_parser = JsonOutputParser(pydantic_object=section_mapping[section]["schema"])
                 
@@ -279,9 +272,9 @@ class AutoApplyModel:
                             else:
                                 resume_details[section] = response[section]
                 
-                if is_st:
-                    st.markdown(f"**{section.upper()} Section**")
-                    st.write(response)
+                # if is_st:
+                #     st.markdown(f"**{section.upper()} Section**")
+                #     st.write(response)
 
             resume_details['keywords'] = ', '.join(job_details['keywords'])
 
@@ -301,7 +294,7 @@ class AutoApplyModel:
             return resume_path, resume_details
         except Exception as e:
             print(e)
-            st.write("Error: \n\n",e)
+            # st.write("Error: \n\n",e)
             return resume_path, resume_details
 
     def resume_cv_pipeline(self, job_url: str, user_data_path: str = demo_data_path):

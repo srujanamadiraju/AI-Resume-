@@ -10,7 +10,7 @@ Copyright (c) 2023 Saurabh Zinjad. All rights reserved | GitHub: Ztrimus
 import json
 import textwrap
 import pandas as pd
-import streamlit as st
+# import streamlit as st
 from openai import OpenAI
 from langchain_community.llms.ollama import Ollama
 from langchain_ollama import OllamaEmbeddings
@@ -50,8 +50,8 @@ class ChatGPT:
         
         except Exception as e:
             print(e)
-            st.error(f"Error in OpenAI API, {e}")
-            st.markdown("<h3 style='text-align: center;'>Please try again! Check the log in the dropdown for more details.</h3>", unsafe_allow_html=True)
+            print(f"Error in OpenAI API, {e}")
+            # st.markdown("<h3 style='text-align: center;'>Please try again! Check the log in the dropdown for more details.</h3>", unsafe_allow_html=True)
     
     def get_embedding(self, text, model=GPT_EMBEDDING_MODEL, task_type="retrieval_document"):
         try:
@@ -88,16 +88,16 @@ class Gemini:
             else:
                 result = content.text
             
-            if result is None:
-                st.write("LLM Response")
-                st.markdown(f"```json\n{content.text}\n```")
+            # if result is None:
+            #     st.write("LLM Response")
+            #     st.markdown(f"```json\n{content.text}\n```")
 
             return result
         
         except Exception as e:
             print(e)
-            st.error(f"Error in Gemini API, {e}")
-            st.markdown("<h3 style='text-align: center;'>Please try again! Check the log in the dropdown for more details.</h3>", unsafe_allow_html=True)
+            # st.error(f"Error in Gemini API, {e}")
+            # st.markdown("<h3 style='text-align: center;'>Please try again! Check the log in the dropdown for more details.</h3>", unsafe_allow_html=True)
             return None
     
     def get_embedding(self, content, model=GEMINI_EMBEDDING_MODEL, task_type="retrieval_document"):
@@ -143,16 +143,16 @@ class OllamaModel:
             else:
                 result = content
             
-            if result is None:
-                st.write("LLM Response")
-                st.markdown(f"```json\n{content.text}\n```")
+            # if result is None:
+            #     st.write("LLM Response")
+            #     st.markdown(f"```json\n{content.text}\n```")
 
             return result
         
         except Exception as e:
             print(e)
-            st.error(f"Error in Ollama model - {self.model}, {e}")
-            st.markdown("<h3 style='text-align: center;'>Please try again! Check the log in the dropdown for more details.</h3>", unsafe_allow_html=True)
+            # st.error(f"Error in Ollama model - {self.model}, {e}")
+            # st.markdown("<h3 style='text-align: center;'>Please try again! Check the log in the dropdown for more details.</h3>", unsafe_allow_html=True)
             return None
     
     def get_embedding(self, content, model=OLLAMA_EMBEDDING_MODEL, task_type="retrieval_document"):

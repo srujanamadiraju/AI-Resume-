@@ -15,7 +15,7 @@ import json
 import base64
 import platform
 import subprocess
-import streamlit as st
+# import streamlit as st
 import streamlit.components.v1 as components
 from fpdf import FPDF
 from markdown_pdf import MarkdownPdf, Section
@@ -178,8 +178,8 @@ def display_pdf(file, type="pdf"):
     if type == 'image':
         # Store Pdf with convert_from_path function
         pages = convert_from_path(file)
-        for page in pages:
-            st.image(page, use_column_width=True)
+        # for page in pages:
+        #     st.image(page, use_column_width=True)
 
     if type == "pdf":
         # Read file as bytes:
@@ -203,7 +203,7 @@ def display_pdf(file, type="pdf"):
         # style="overflow: auto; width: 100%; height: 100vh">"""
 
         # Display file
-        st.markdown(pdf_display, unsafe_allow_html=True)
+        # st.markdown(pdf_display, unsafe_allow_html=True)
 
 def save_latex_as_pdf(tex_file_path: str, dst_path: str):
     try:
@@ -238,7 +238,6 @@ def save_latex_as_pdf(tex_file_path: str, dst_path: str):
             # open_file(dst_path)
         except Exception as e:
             print("Unable to open the PDF file.")
-            st.write("Unable to open the PDF file.")
 
         filename_without_ext = os.path.basename(tex_file_path).split(".")[0]
         unnessary_files = [

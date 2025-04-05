@@ -12,7 +12,7 @@ import json
 import PyPDF2
 import requests
 from bs4 import BeautifulSoup
-import streamlit as st
+# import streamlit as st
 from langchain_community.document_loaders import PlaywrightURLLoader, UnstructuredURLLoader, WebBaseLoader
 
 def read_data_from_url(url):
