@@ -1,0 +1,31 @@
+{
+  "job_title": "Machine Learning Engineer",
+  "job_purpose": "Build scalable AI solutions for healthcare diagnostics.",
+  "keywords": [
+    "Machine Learning",
+    "AI",
+    "Healthcare",
+    "Diagnostics",
+    "Model Development",
+    "Deployment",
+    "Real-time Performance",
+    "Python",
+    "TensorFlow",
+    "PyTorch",
+    "Medical Imaging"
+  ],
+  "job_duties_and_responsibilities": [
+    "Develop machine learning models for healthcare diagnostics",
+    "Deploy models for real-time performance",
+    "Optimize model performance",
+    "Work with medical imaging datasets"
+  ],
+  "required_qualifications": [
+    "Proficiency in Python",
+    "Experience with TensorFlow/PyTorch",
+    "Experience with medical imaging datasets"
+  ],
+  "preferred_qualifications": [],
+  "company_name": "Not specified",
+  "company_details": "Not specified"
+}

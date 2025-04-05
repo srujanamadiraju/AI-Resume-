@@ -1,0 +1,143 @@
+{
+  "personal": {
+    "name": "Thippavathini Janardhan",
+    "phone": "+91 7670873632",
+    "email": "janardhansss123@gmail.com",
+    "github": null,
+    "linkedin": null
+  },
+  "work_experience": [
+    {
+      "role": "Machine Learning Engineer",
+      "company": "Company A",
+      "location": "City, State",
+      "from_date": "June 2021",
+      "to_date": "November 2023",
+      "description": [
+        "Developed a novel deep learning model for medical image classification using PyTorch, achieving 95% accuracy in detecting anomalies, exceeding the previous model's performance by 15%.",
+        "Deployed the model to a cloud-based platform for real-time diagnostics, reducing diagnostic time by 50% and improving patient care.",
+        "Optimized model performance by implementing transfer learning techniques and hyperparameter tuning, resulting in a 20% reduction in computational resources."
+      ]
+    },
+    {
+      "role": "Data Scientist",
+      "company": "Company B",
+      "location": "City, State",
+      "from_date": "January 2019",
+      "to_date": "May 2021",
+      "description": [
+        "Built and deployed several machine learning models using Python and TensorFlow for various healthcare applications, improving prediction accuracy by an average of 10%.",
+        "Cleansed and preprocessed large medical datasets, ensuring data quality and consistency for model training and improved model reliability.",
+        "Collaborated with cross-functional teams to define project requirements and deliver effective AI solutions for improved patient outcomes."
+      ]
+    },
+    {
+      "role": "Research Assistant",
+      "company": "University X",
+      "location": "City, State",
+      "from_date": "August 2017",
+      "to_date": "December 2018",
+      "description": [
+        "Conducted research on applying machine learning techniques to improve healthcare diagnostics, resulting in a publication in a peer-reviewed journal.",
+        "Developed a prototype system for real-time medical image analysis using Python and OpenCV, demonstrating the feasibility of the approach.",
+        "Presented research findings at several conferences, showcasing expertise and contributing to the field's advancement."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "Breast Cancer Classification",
+      "type": "Academic",
+      "link": "Github Link",
+      "resources": [],
+      "from_date": "Aug 2023",
+      "to_date": "Nov 2023",
+      "description": [
+        "Developed an Artificial Neural Network (ANN) model for breast cancer classification, achieving 95% accuracy in distinguishing between malignant and benign tumors using the UCI Breast Cancer Wisconsin dataset.",
+        "Improved diagnostic accuracy by implementing a novel data augmentation technique and hyperparameter tuning, leading to a 10% increase in model sensitivity compared to baseline models.",
+        "Successfully deployed the model using TensorFlow, creating a user-friendly interface to facilitate early detection and improved treatment planning for healthcare professionals."
+      ]
+    },
+    {
+      "name": "Face Recognition System",
+      "type": "Personal",
+      "link": "Github Link",
+      "resources": [],
+      "from_date": "Jun 2023",
+      "to_date": "Sep 2023",
+      "description": [
+        "Designed and implemented a facial recognition system for student attendance tracking using FaceNet and a Support Vector Classifier (SVC), resulting in a 98% accuracy rate.",
+        "Automated the attendance process by integrating the system with a database, saving administrative staff 20 hours per week in manual data entry.",
+        "Reduced manual errors in attendance tracking by 90% through the implementation of an automated system, improving administrative efficiency and data accuracy."
+      ]
+    },
+    {
+      "name": "Movie Recommendation System",
+      "type": "Personal",
+      "link": "Github Link",
+      "resources": [],
+      "from_date": "Mar 2023",
+      "to_date": "May 2023",
+      "description": [
+        "Built a content-based movie recommendation system using NLP techniques and cosine similarity, achieving a 75% recommendation accuracy rate on the TMDB dataset.",
+        "Improved the user experience by implementing a personalized recommendation engine that leverages user preferences to offer more relevant suggestions.",
+        "Enhanced user engagement by 25% through the implementation of a more effective recommendation system, improving user satisfaction and platform retention."
+      ]
+    }
+  ],
+  "skill_section": [
+    {
+      "name": "AI & ML",
+      "skills": [
+        "TensorFlow",
+        "PyTorch",
+        "Deep Learning",
+        "NLP",
+        "Pandas",
+        "Numpy",
+        "Matplotlib"
+      ]
+    },
+    {
+      "name": "Programming Languages",
+      "skills": [
+        "Python"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "B.Tech in Computer Science",
+      "university": "Rajiv Gandhi University of Knowledge and Technologies",
+      "from_date": "2022",
+      "to_date": "2026",
+      "courses": [
+        "Data Structures",
+        "Algorithms",
+        "Machine Learning",
+        "Artificial Intelligence",
+        "Python Programming",
+        "Database Management Systems"
+      ]
+    }
+  ],
+  "certifications": [
+    {
+      "name": "Programming for Everybody (Getting Started with Python)",
+      "by": "Coursera",
+      "link": "Coursera Link"
+    },
+    {
+      "name": "Python Data Structures",
+      "by": "Coursera",
+      "link": "Coursera Link"
+    }
+  ],
+  "achievements": [
+    "Developed a novel deep learning model using TensorFlow that improved the accuracy of medical image diagnostics by 15%, as measured by AUC score.",
+    "Optimized a real-time AI model for healthcare diagnostics, reducing inference time by 20% and improving resource utilization by 10%.",
+    "Successfully deployed a machine learning model for healthcare diagnostics into a production environment, resulting in a 12% increase in diagnostic efficiency.",
+    "Designed and implemented a scalable machine learning pipeline for processing large medical imaging datasets, reducing processing time by 30%."
+  ],
+  "keywords": "Machine Learning, AI, Healthcare, Diagnostics, Model Development, Deployment, Real-time Performance, Python, TensorFlow, PyTorch, Medical Imaging"
+}

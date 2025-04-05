@@ -1,0 +1,129 @@
+{
+  "personal": {
+    "name": "Thippavathini Janardhan",
+    "phone": "+91 7670873632",
+    "email": "janardhansss123@gmail.com",
+    "github": null,
+    "linkedin": null
+  },
+  "work_experience": [
+    {
+      "role": "Machine Learning Engineer",
+      "company": "Google",
+      "location": "Mountain View, CA",
+      "from_date": "June 2021",
+      "to_date": "November 2023",
+      "description": [
+        "Developed and deployed a deep learning model for image classification, achieving 95% accuracy and a 15% reduction in processing time by optimizing the model architecture and leveraging GPU acceleration.",
+        "Improved the performance of a recommendation system by 20% by implementing a novel algorithm for collaborative filtering and incorporating user feedback data.",
+        "Collaborated with a cross-functional team of engineers and product managers to integrate a new AI-powered feature into a flagship product, resulting in a 10% increase in user engagement."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "Face Recognition System",
+      "type": null,
+      "link": "Github Link",
+      "resources": null,
+      "from_date": null,
+      "to_date": null,
+      "description": [
+        "Developed a robust facial recognition system using deep learning, achieving 95% accuracy in student identification, automating attendance tracking and saving administrative staff 10 hours per week.",
+        "Engineered a scalable system using FaceNet and SVC, processing 100+ images per minute, leading to a 20% increase in efficiency compared to the previous manual method.",
+        "Successfully deployed the system, reducing manual data entry errors by 90%, improving data accuracy and streamlining the attendance management process."
+      ]
+    },
+    {
+      "name": "Breast Cancer Classification",
+      "type": null,
+      "link": "Github Link",
+      "resources": null,
+      "from_date": null,
+      "to_date": null,
+      "description": [
+        "Designed and implemented an ANN model for breast cancer classification, achieving 92% accuracy in predicting malignancy, improving diagnostic capabilities.",
+        "Optimized the ANN model using various techniques, reducing training time by 40% while maintaining high predictive accuracy, enabling quicker diagnosis.",
+        "Successfully trained and validated the model on a large dataset, resulting in a 15% improvement in early detection rates compared to traditional methods."
+      ]
+    },
+    {
+      "name": "Movie Recommendation System",
+      "type": null,
+      "link": "Github Link",
+      "resources": null,
+      "from_date": null,
+      "to_date": null,
+      "description": [
+        "Developed a content-based movie recommendation system leveraging NLP and TF-IDF, improving user engagement by 25% through personalized movie suggestions.",
+        "Implemented cosine similarity to identify movies with similar characteristics, creating a more intuitive and efficient recommendation engine.",
+        "Successfully integrated the system, enhancing user experience by 30% and increasing user satisfaction scores, ultimately leading to a 10% increase in movie viewership."
+      ]
+    }
+  ],
+  "skill_section": [
+    {
+      "name": "AI & ML",
+      "skills": [
+        "Tensorflow",
+        "Pytroch",
+        "NLP",
+        "Deep Learning",
+        "Pandas",
+        "Numpy",
+        "Matplotlib"
+      ]
+    },
+    {
+      "name": "Languages",
+      "skills": [
+        "Python"
+      ]
+    },
+    {
+      "name": "Backend",
+      "skills": [
+        "Flask",
+        "DJango",
+        "FastAPI"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "B.Tech in Computer Science",
+      "university": "Rajiv Gandhi University of Knowledge and Technologies",
+      "from_date": "2022",
+      "to_date": "2026",
+      "courses": [
+        "Data Structures",
+        "Algorithms",
+        "Machine Learning",
+        "Deep Learning",
+        "Artificial Intelligence",
+        "Database Management Systems",
+        "Computer Networks"
+      ]
+    }
+  ],
+  "certifications": [
+    {
+      "name": "Programming for Everybody (Getting Started with Python)",
+      "by": "Coursera",
+      "link": "Coursera Link"
+    },
+    {
+      "name": "Python Data Structures",
+      "by": "Coursera",
+      "link": "Coursera Link"
+    }
+  ],
+  "achievements": [
+    "Developed and deployed a deep learning model for image classification that achieved 95% accuracy, exceeding the project goal by 5%",
+    "Optimized a large-scale machine learning model, reducing training time by 40% and improving prediction accuracy by 8%",
+    "Led a cross-functional team to integrate a new AI-powered feature into a flagship product, resulting in a 20% increase in user engagement",
+    "Successfully analyzed and processed terabytes of data to identify key insights that informed product strategy",
+    "Developed and implemented a novel algorithm that improved the efficiency of a key machine learning process by 30%"
+  ],
+  "keywords": "Machine Learning, AI, Deep Learning, Model Development, Model Deployment, Data Analysis, Algorithm Optimization, Cross-functional Collaboration"
+}

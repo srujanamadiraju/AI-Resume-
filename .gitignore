@@ -1,9 +1,8 @@
+myenv/
+./output/NotSpecified/
 __pycache__
-.env
-output
-*.DS_Store
-dist
-.venv
-.anima
-
-myenv
+**/__pycache__/
+models/resume-converter/zlm/__pycache__/
+models/resume-converter/zlm/prompts/__pycache__/
+models/resume-converter/zlm/schemas/__pycache__/
+models/resume-converter/zlm/utils/__pycache__/
