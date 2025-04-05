@@ -114,7 +114,9 @@ def generate_resume(api_key, provider, model, input_file_path, jd_url="", jd_tex
 
         print("[SUCCESS] ✅ Done generating documents.")
         
-        return resume_latex , metrics_dict
+        # resume_cls = read_file(r"models\resume_converter\zlm\templates\resume.cls")
+        
+        return resume_latex , metrics_dict 
 
     except Exception as e:
         print(f"[ERROR] An exception occurred: {e}")
@@ -145,6 +147,8 @@ def convert_resume(file_path,job_text):
     model = "gemini-1.5-flash-latest"
     # file_path = r"app\models\resume-converter\uploads\janardhan_resume.pdf"
     # job_text = "We’re hiring a Machine Learning Engineer to build scalable AI solutions for healthcare diagnostics. Responsibilities include model development, deployment, and optimizing real-time performance.Requirements: Proficiency in Python, TensorFlow/PyTorch, and experience with medical imaging datasets."
+    resume_cls = read_file(r"models\resume_converter\zlm\templates\resume.cls")
+    
     resume_latex , metrics_dict = generate_resume(api_key, provider, model, input_file_path=file_path, jd_text=job_text, get_resume=True, get_cover_letter=False)
     
-    return resume_latex , metrics_dict
+    return resume_latex , resume_cls , metrics_dict 
