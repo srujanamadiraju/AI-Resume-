@@ -1,0 +1,26 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\begin{document}
+
+\section*{Resume}
+
+\textbf{Name:} {{ name }}
+
+\textbf{Email:} {{ email }}
+
+\textbf{Phone:} {{ phone }}
+
+\section*{Education}
+{% for edu in education %}
+- {{ edu }}
+{% endfor %}
+
+\section*{Skills}
+{{ skills | join(', ') }}
+
+\section*{Experience}
+{% for job in work_experience %}
+- {{ job }}
+{% endfor %}
+
+\end{document}
