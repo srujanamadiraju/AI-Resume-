@@ -9,7 +9,7 @@ from nltk.tokenize import word_tokenize
 import re
 
 from models.resume_converter.zlm import AutoApplyModel
-from models.resume_converter.zlm.utils.utils import read_file
+from models.resume_converter.zlm.utils.utils import read_file 
 from models.resume_converter.zlm.utils.metrics import jaccard_similarity, overlap_coefficient, cosine_similarity
 from models.resume_converter.zlm.variables import LLM_MAPPING
 
@@ -147,8 +147,12 @@ def convert_resume(file_path,job_text):
     model = "gemini-1.5-flash-latest"
     # file_path = r"app\models\resume-converter\uploads\janardhan_resume.pdf"
     # job_text = "We’re hiring a Machine Learning Engineer to build scalable AI solutions for healthcare diagnostics. Responsibilities include model development, deployment, and optimizing real-time performance.Requirements: Proficiency in Python, TensorFlow/PyTorch, and experience with medical imaging datasets."
-    resume_cls = read_file(r"models\resume_converter\zlm\templates\resume.cls")
+    cls_path = r"models\resume_converter\zlm\templates\resume.cls"
+    resume_cls = read_file(cls_path)
     
     resume_latex , metrics_dict = generate_resume(api_key, provider, model, input_file_path=file_path, jd_text=job_text, get_resume=True, get_cover_letter=False)
     
-    return resume_latex , resume_cls , metrics_dict 
+    # resume_cls = remove_escape_sequences(resume_cls)
+    # resume_latex = remove_escape_sequences(resume_latex)
+    
+    return resume_latex , resume_cls ,  metrics_dict 

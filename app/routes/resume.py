@@ -1,9 +1,12 @@
 from fastapi import APIRouter , File, UploadFile , HTTPException , Form
 from models.resume_converter.web_app import convert_resume
+from fastapi.responses import FileResponse , StreamingResponse
 from PIL import Image
 import io
 import shutil
 import os
+from zipfile import ZipFile
+import json
 
 router = APIRouter()
 
@@ -15,7 +18,7 @@ async def convert_resume_route(
     file_path = ""
     try:
         # Create uploads directory if it doesn't exist
-        upload_dir = "uploads"
+        upload_dir = "cache"
         os.makedirs(upload_dir, exist_ok=True)
         
         # Save the uploaded file
@@ -24,13 +27,18 @@ async def convert_resume_route(
         with open(file_path, "wb") as buffer:
             shutil.copyfileobj(resume_file.file, buffer)
         
-        resume_latex , resume_cls , metrics = convert_resume(file_path,job_description)
-        result = {
-            "resume_latex":resume_latex,
-            "resume_cls":resume_cls,
-            "metrics":metrics
-        }
+        resume_latex , resume_cls  , metrics = convert_resume(file_path,job_description)
+          
+    
+        zip_io = io.BytesIO()
+        with ZipFile(zip_io, mode="w") as zipf:
+            # Write string contents directly into the zip
+            zipf.writestr("latex.tex", resume_latex)
+            zipf.writestr("resume.cls", resume_cls)
+            zipf.writestr("metrics.json", json.dumps(metrics, indent=4))
         
+            
+        zip_io.seek(0)
         resume_file.file.close()
         
         # Delete the resume file
@@ -40,12 +48,12 @@ async def convert_resume_route(
             except Exception as e:
                 print(f"Error deleting file {file_path}: {str(e)}")
         
-        return {
-            "status": "success",
-            "message": "Resume processed successfully",
-            "result": result
-        }
-    
+
+        return StreamingResponse(
+            zip_io, 
+            media_type="application/x-zip-compressed",
+            headers={"Content-Disposition": "attachment; filename=result.zip"}
+        )
     except Exception as e:
         raise HTTPException(
             status_code=500,
