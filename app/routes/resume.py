@@ -15,7 +15,7 @@ async def convert_resume_route(
     file_path = ""
     try:
         # Create uploads directory if it doesn't exist
-        upload_dir = "app/models/resume_converter/uploads"
+        upload_dir = "uploads"
         os.makedirs(upload_dir, exist_ok=True)
         
         # Save the uploaded file
@@ -30,6 +30,15 @@ async def convert_resume_route(
             "metrics":metrics
         }
         
+        resume_file.file.close()
+        
+        # Delete the resume file
+        if file_path and os.path.exists(file_path):
+            try:
+                os.remove(file_path)
+            except Exception as e:
+                print(f"Error deleting file {file_path}: {str(e)}")
+        
         return {
             "status": "success",
             "message": "Resume processed successfully",
@@ -42,13 +51,7 @@ async def convert_resume_route(
             detail=f"An error occurred while processing the resume: {str(e)}"
         )
     
-    finally:
-        # Close the file
-        resume_file.file.close()
-        
-        # Delete the resume file
-        if file_path and os.path.exists(file_path):
-            try:
-                os.remove(file_path)
-            except Exception as e:
-                print(f"Error deleting file {file_path}: {str(e)}")
+    # finally:
+    #     # Close the file
+    #     pass
+    

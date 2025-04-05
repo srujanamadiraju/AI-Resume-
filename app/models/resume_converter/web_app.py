@@ -48,7 +48,7 @@ def generate_resume(api_key, provider, model, input_file_path, jd_url="", jd_tex
         print("[ERROR] API key is required for provider:", provider)
         return
 
-    # Clean previous output
+    # Clean previous output  ### rmoutput
     if os.path.exists("output"):
         shutil.rmtree("output")
     os.makedirs("uploads", exist_ok=True)
@@ -67,9 +67,9 @@ def generate_resume(api_key, provider, model, input_file_path, jd_url="", jd_tex
 
         print("[INFO] Extracting job details...")
         if jd_url:
-            job_details, jd_path = resume_llm.job_details_extraction(url=jd_url, is_st=False)
+            job_details = resume_llm.job_details_extraction(url=jd_url, is_st=False)
         else:
-            job_details, jd_path = resume_llm.job_details_extraction(job_site_content=jd_text, is_st=False)
+            job_details = resume_llm.job_details_extraction(job_site_content=jd_text, is_st=False)
 
         # print("[JOB DETAILS]", job_details)
 
@@ -79,8 +79,8 @@ def generate_resume(api_key, provider, model, input_file_path, jd_url="", jd_tex
 
         if get_resume:
             print("[INFO] Generating Resume...")
-            tex_path, resume_details , resume_latex = resume_llm.resume_builder(job_details, user_data, is_st=False)
-            print(f"[TEX GENERATED PATH] -> {tex_path}")
+            resume_details , resume_latex = resume_llm.resume_builder(job_details, user_data, is_st=False)
+            # print(f"[TEX GENERATED PATH] -> {tex_path}")
             
         metrics_dict = {}
         for metric in ['overlap_coefficient', 'cosine_similarity']:
@@ -95,7 +95,6 @@ def generate_resume(api_key, provider, model, input_file_path, jd_url="", jd_tex
                     user_score = fn(json.dumps(resume_details), json.dumps(user_data))
                     job_alignment_score = fn(json.dumps(resume_details), json.dumps(job_details))
                     job_match_score = fn(json.dumps(user_data), json.dumps(job_details))
-                print(user_score)
 
                 print(f"[METRIC: {metric}]")
                 print(f"  - User Personalization: {user_score:.3f}")
@@ -109,8 +108,8 @@ def generate_resume(api_key, provider, model, input_file_path, jd_url="", jd_tex
 
         if get_cover_letter:
             print("[INFO] Generating Cover Letter...")
-            cv_details, cv_path = resume_llm.cover_letter_generator(job_details, user_data, is_st=False)
-            print(f"[COVER LETTER GENERATED] -> {cv_path}")
+            cv_details = resume_llm.cover_letter_generator(job_details, user_data, is_st=False)
+            # print(f"[COVER LETTER GENERATED] -> {cv_path}")
             print("[COVER LETTER CONTENT]\n", cv_details)
 
         print("[SUCCESS] ✅ Done generating documents.")
@@ -131,7 +130,7 @@ def overlap_coefficient(text1, text2):
     tokens1 = set(simple_tokenize(text1))
     tokens2 = set(simple_tokenize(text2))
     intersection = tokens1.intersection(tokens2)
-    smallest_set_size = min(len(tokens1), len(tokens2))
+    smallest_set_size = min(len(tokens1), len(tokens2)) 
     if smallest_set_size == 0:
         return 0.0
     return len(intersection) / smallest_set_size
@@ -139,10 +138,9 @@ def overlap_coefficient(text1, text2):
 
 # Example usage:
 def convert_resume(file_path,job_text):
-    load_dotenv(r"app\models\resume_converter\.env")
-    print("janardhan")
-    api_key = "AIzaSyA6eXBAwTkNMLVKo9gHj4h0kJyrkktnOAg"
-    print(api_key)
+    load_dotenv()
+    api_key = os.getenv("GEMINI_API_KEY")
+    print(f"[API_KEY] {api_key}")
     provider = "Gemini"
     model = "gemini-1.5-flash-latest"
     # file_path = r"app\models\resume-converter\uploads\janardhan_resume.pdf"

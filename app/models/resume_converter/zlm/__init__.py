@@ -159,15 +159,15 @@ class AutoApplyModel:
 
                 if url is not None and url.strip() != "":
                     job_details["url"] = url
-                jd_path = utils.job_doc_name(job_details, self.downloads_dir, "jd")
+                # jd_path = utils.job_doc_name(job_details, self.downloads_dir, "jd")
 
-                utils.write_json(jd_path, job_details)
-                print(f"Job Details JSON generated at: {jd_path}")
+                # utils.write_json(jd_path, job_details)
+                # print(f"Job Details JSON generated at: {jd_path}")
 
                 if url is not None and url.strip() != "":
                     del job_details['url']
                 
-                return job_details, jd_path
+                return job_details
             else:
                 raise Exception("Unable to web scrape the job description.")
 
@@ -202,14 +202,14 @@ class AutoApplyModel:
 
             cover_letter = self.llm.get_response(prompt=prompt, expecting_longer_output=True)
 
-            cv_path = utils.job_doc_name(job_details, self.downloads_dir, "cv")
-            utils.write_file(cv_path, cover_letter)
-            print("Cover Letter generated at: ", cv_path)
-            if need_pdf:
-                utils.text_to_pdf(cover_letter, cv_path.replace(".txt", ".pdf"))
-                print("Cover Letter PDF generated at: ", cv_path.replace(".txt", ".pdf"))
+            # cv_path = utils.job_doc_name(job_details, self.downloads_dir, "cv")
+            # utils.write_file(cv_path, cover_letter)
+            # print("Cover Letter generated at: ", cv_path)
+            # if need_pdf:
+            #     utils.text_to_pdf(cover_letter, cv_path.replace(".txt", ".pdf"))
+            #     print("Cover Letter PDF generated at: ", cv_path.replace(".txt", ".pdf"))
             
-            return cover_letter, cv_path.replace(".txt", ".pdf")
+            return cover_letter
         except Exception as e:
             print(e)
             # st.write("Error: \n\n",e)
@@ -279,24 +279,24 @@ class AutoApplyModel:
 
             resume_details['keywords'] = ', '.join(job_details['keywords'])
 
-            resume_path = utils.job_doc_name(job_details, self.downloads_dir, "resume")
+            # resume_path = utils.job_doc_name(job_details, self.downloads_dir, "resume")
 
-            utils.write_json(resume_path, resume_details)
+            # utils.write_json(resume_path, resume_details)
             
 
-            resume_path = resume_path.replace(".json", ".pdf")
+            # resume_path = resume_path.replace(".json", ".pdf")
             # st.write(f"resume_path: {resume_path}")
 
 
-            tex_path,resume_latex = latex_to_pdf(resume_details, resume_path)
+            resume_latex = latex_to_pdf(resume_details)
             # st.write(f"resume_pdf_path: {resume_pdf_path}")
 
 
-            return tex_path, resume_details , resume_latex
+            return  resume_details , resume_latex
         except Exception as e:
             print(e)
             # st.write("Error: \n\n",e)
-            return resume_path, resume_details
+            return  resume_details
 
     def resume_cv_pipeline(self, job_url: str, user_data_path: str = demo_data_path):
         """Run the Auto Apply Pipeline.

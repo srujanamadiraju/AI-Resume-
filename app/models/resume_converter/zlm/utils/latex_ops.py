@@ -44,7 +44,7 @@ def escape_for_latex(data):
 
     return data
 
-def latex_to_pdf(json_resume, dst_path):
+def latex_to_pdf(json_resume):
     try:
         module_dir = os.path.dirname(__file__)
         templates_path = os.path.join(os.path.dirname(module_dir), 'templates')
@@ -71,18 +71,18 @@ def latex_to_pdf(json_resume, dst_path):
         resume_latex = use_template(latex_jinja_env, escaped_json_resume)
 
 
-        tex_temp_path = os.path.join(os.path.realpath(templates_path), os.path.basename(dst_path).replace(".pdf", ".tex"))
+        # tex_temp_path = os.path.join(os.path.realpath(templates_path), os.path.basename(dst_path).replace(".pdf", ".tex"))
 
 
-        write_file(tex_temp_path, resume_latex)
+        # write_file(tex_temp_path, resume_latex)
         
-        print("hi3")
-        print(tex_temp_path) # -> path of latex file
+        # print("hi3")
+        # print(tex_temp_path) # -> path of latex file
         # print(resume_latex)
 
         # save_latex_as_pdf(tex_temp_path, dst_path)
 
-        return tex_temp_path,resume_latex
+        return resume_latex
     except Exception as e:
         print(e)
         return None
