@@ -9,15 +9,15 @@ import numpy as np
 from langchain.prompts import PromptTemplate
 from langchain_core.output_parsers import JsonOutputParser
 
-from models.resume_converter.zlm.schemas.sections_schemas import ResumeSchema
-from models.resume_converter.zlm.utils import utils
-from models.resume_converter.zlm.utils.latex_ops import latex_to_pdf
-from models.resume_converter.zlm.utils.llm_models import ChatGPT, Gemini, OllamaModel
-from models.resume_converter.zlm.utils.data_extraction import read_data_from_url, extract_text
-from models.resume_converter.zlm.utils.metrics import jaccard_similarity, overlap_coefficient, cosine_similarity, vector_embedding_similarity
-from models.resume_converter.zlm.prompts.resume_prompt import CV_GENERATOR, RESUME_WRITER_PERSONA, JOB_DETAILS_EXTRACTOR, RESUME_DETAILS_EXTRACTOR
-from models.resume_converter.zlm.schemas.job_details_schema import JobDetails
-from models.resume_converter.zlm.variables import DEFAULT_LLM_MODEL, DEFAULT_LLM_PROVIDER, LLM_MAPPING, section_mapping
+from app.models.resume_converter.zlm.schemas.sections_schemas import ResumeSchema
+from app.models.resume_converter.zlm.utils import utils
+from app.models.resume_converter.zlm.utils.latex_ops import latex_to_pdf
+from app.models.resume_converter.zlm.utils.llm_models import PerplexityLiteLLM
+from app.models.resume_converter.zlm.utils.data_extraction import read_data_from_url, extract_text
+from app.models.resume_converter.zlm.utils.metrics import jaccard_similarity, overlap_coefficient, cosine_similarity, vector_embedding_similarity
+from app.models.resume_converter.zlm.prompts.resume_prompt import CV_GENERATOR, RESUME_WRITER_PERSONA, JOB_DETAILS_EXTRACTOR, RESUME_DETAILS_EXTRACTOR
+from app.models.resume_converter.zlm.schemas.job_details_schema import JobDetails
+from app.models.resume_converter.zlm.variables import DEFAULT_LLM_MODEL, DEFAULT_LLM_PROVIDER, LLM_MAPPING, section_mapping
 
 module_dir = os.path.dirname(__file__)
 demo_data_path = os.path.join(module_dir, "demo_data", "user_profile.json")
@@ -64,14 +64,7 @@ class AutoApplyModel:
         self.llm = self.get_llm_instance()
     
     def get_llm_instance(self):
-        if self.provider == "GPT":
-            return ChatGPT(api_key=self.api_key, model=self.model, system_prompt=self.system_prompt)
-        elif self.provider == "Gemini":
-            return Gemini(api_key=self.api_key, model=self.model, system_prompt=self.system_prompt)
-        elif self.provider == "Ollama":
-            return OllamaModel(model=self.model, system_prompt=self.system_prompt)
-        else:
-            raise Exception("Invalid LLM Provider")
+        return PerplexityLiteLLM(api_key=self.api_key, model=self.model, system_prompt=self.system_prompt)
 
     def resume_to_json(self, pdf_path):
         """

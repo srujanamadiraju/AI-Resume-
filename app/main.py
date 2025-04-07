@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 
-
-from routes import dt , resume
+from app.routes import dt , resume
 
 app = FastAPI()
 

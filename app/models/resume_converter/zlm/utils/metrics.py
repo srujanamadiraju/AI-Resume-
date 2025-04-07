@@ -14,7 +14,7 @@ import numpy as np
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics import pairwise
-from models.resume_converter.zlm.utils.utils import key_value_chunking
+from app.models.resume_converter.zlm.utils.utils import key_value_chunking
 
 import nltk
 from nltk.corpus import stopwords
