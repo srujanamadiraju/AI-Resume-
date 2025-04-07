@@ -8,10 +8,10 @@ import nltk
 from nltk.tokenize import word_tokenize
 import re
 
-from models.resume_converter.zlm import AutoApplyModel
-from models.resume_converter.zlm.utils.utils import read_file 
-from models.resume_converter.zlm.utils.metrics import jaccard_similarity, overlap_coefficient, cosine_similarity
-from models.resume_converter.zlm.variables import LLM_MAPPING
+from app.models.resume_converter.zlm import AutoApplyModel
+from app.models.resume_converter.zlm.utils.utils import read_file 
+from app.models.resume_converter.zlm.utils.metrics import jaccard_similarity, overlap_coefficient, cosine_similarity
+from app.models.resume_converter.zlm.variables import LLM_MAPPING
 
 from dotenv import load_dotenv
 
@@ -141,10 +141,10 @@ def overlap_coefficient(text1, text2):
 # Example usage:
 def convert_resume(file_path,job_text):
     load_dotenv()
-    api_key = os.getenv("GEMINI_API_KEY")
+    api_key = os.getenv("PERPLEXITY_API_KEY")
     print(f"[API_KEY] {api_key}")
-    provider = "Gemini"
-    model = "gemini-1.5-flash-latest"
+    provider = "Perplexity"
+    model = "sonar-pro"
     # file_path = r"app\models\resume-converter\uploads\janardhan_resume.pdf"
     # job_text = "We’re hiring a Machine Learning Engineer to build scalable AI solutions for healthcare diagnostics. Responsibilities include model development, deployment, and optimizing real-time performance.Requirements: Proficiency in Python, TensorFlow/PyTorch, and experience with medical imaging datasets."
     cls_path = r"models\resume_converter\zlm\templates\resume.cls"

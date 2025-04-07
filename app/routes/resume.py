@@ -1,5 +1,5 @@
 from fastapi import APIRouter , File, UploadFile , HTTPException , Form
-from models.resume_converter.web_app import convert_resume
+from app.models.resume_converter.web_app import convert_resume
 from fastapi.responses import FileResponse , StreamingResponse
 from PIL import Image
 import io

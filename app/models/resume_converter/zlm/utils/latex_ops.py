@@ -11,7 +11,7 @@ Copyright (c) 2023 Saurabh Zinjad. All rights reserved | GitHub: Ztrimus
 import os
 import jinja2
 # import streamlit as st
-from models.resume_converter.zlm.utils.utils import write_file, save_latex_as_pdf
+from app.models.resume_converter.zlm.utils.utils import write_file, save_latex_as_pdf
 
 def escape_for_latex(data):
     if isinstance(data, dict):
